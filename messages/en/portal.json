@@ -1,0 +1,60 @@
+{
+  "title": "Staff Portal",
+  "orgName": "Healthy Seeb",
+  "location": "Seeb – Muscat Governorate",
+  "logoAlt": "Healthy Seeb logo",
+  "nav": {
+    "label": "Main menu",
+    "dashboard": "Home",
+    "committee": "Committee page",
+    "events": "Events",
+    "announcements": "Announcements",
+    "reports": "Reports",
+    "referrals": "Referred requests",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "support": {
+    "title": "Technical support"
+  },
+  "logout": "Log out",
+  "roles": {
+    "chair": "Committee chair",
+    "rapporteur": "Committee rapporteur",
+    "member": "Committee member"
+  },
+  "postTypes": {
+    "activity": "Event",
+    "announcement": "Announcement",
+    "report": "Report",
+    "news": "News",
+    "general": "General"
+  },
+  "statuses": {
+    "draft": "Draft",
+    "submitted": "Awaiting approval",
+    "approved": "Published",
+    "rejected": "Rejected"
+  },
+  "breadcrumbHome": "Dashboard",
+  "addNew": "+ Add new",
+  "addPost": "+ Add post",
+  "table": {
+    "title": "Title",
+    "type": "Type",
+    "date": "Date",
+    "status": "Status",
+    "actions": "Actions",
+    "edit": "Edit",
+    "view": "View",
+    "empty": "No posts yet."
+  },
+  "view": {
+    "close": "Close",
+    "noContent": "No content has been written for this post yet.",
+    "publicNote": "This post is visible to the public on the committee page.",
+    "previewNote": "Preview only – it won't appear on the website until it is approved.",
+    "rejectionReason": "Reason for rejection",
+    "date": "Date"
+  }
+}

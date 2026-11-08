@@ -1,33 +1,75 @@
 @import 'tailwindcss';
 
 /*
- * Design tokens for the whole public website.
- * Use them as Tailwind classes: bg-primary, text-primary-dark, font-sans, etc.
- *
- * TODO (UI/UX team): replace the placeholder colours below with the final palette.
+ * Design tokens from the UI/UX prototype (alyaqeenkhalid.github.io/seebwebsiteinternal).
+ * Names match the prototype's Tailwind config, so its classes port over directly:
+ * bg-primary, text-secondary, bg-surface-container-low, text-on-surface-variant, etc.
  */
 @theme {
-  /* Brand colours (placeholders) */
-  --color-primary: #0f766e;
-  --color-primary-light: #ccfbf1;
-  --color-primary-dark: #134e4a;
-  --color-secondary: #1d4ed8;
-  --color-accent: #f59e0b;
+  /* Brand */
+  --color-primary: #014260; /* brand blue */
+  --color-primary-hover: #002f45;
+  --color-secondary: #116e68; /* brand green */
+  --color-sand: #b79f7d; /* brand sand */
+  --color-sand-hover: #a68d6b;
+  --color-mint: #eef6f2;
 
-  /* Text and surfaces */
-  --color-ink: #0f172a;
-  --color-muted: #64748b;
-  --color-surface: #ffffff;
-  --color-surface-alt: #f8fafc;
-  --color-border: #e2e8f0;
+  /* Surfaces */
+  --color-background: #f5faff;
+  --color-surface: #f5faff;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #e9f5ff;
+  --color-surface-container: #e0f0fc;
+  --color-surface-container-high: #daeaf6;
+  --color-surface-variant: #d4e5f1;
 
-  /* Fonts: the font files are imported in [locale]/layout.tsx */
-  --font-sans: 'IBM Plex Sans', system-ui, sans-serif;
-}
+  /* Text and lines */
+  --color-on-surface: #0e1d26;
+  --color-on-surface-variant: #41484d;
+  --color-outline: #71787e;
+  --color-outline-variant: #c1c7ce;
 
-/* Arabic pages use the Arabic font for every element that uses font-sans. */
-html[lang='ar'] {
-  --font-sans: 'IBM Plex Sans Arabic', 'IBM Plex Sans', system-ui, sans-serif;
+  /* Status */
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #93000a;
+  --color-success: #137333;
+  --color-success-container: #e6f4ea;
+  --color-info-container: #e8f0fe;
+  --color-warning: #8a6d45;
+  --color-warning-container: #fbf4ea;
+
+  /* Font: Almarai (Arabic + Latin), files imported in [locale]/layout.tsx */
+  --font-sans: 'Almarai', system-ui, sans-serif;
+
+  /* Type scale from the prototype: text-display-lg, text-headline-md, text-label-sm, ... */
+  --text-display-lg: 48px;
+  --text-display-lg--line-height: 68px;
+  --text-display-lg--font-weight: 800;
+  --text-headline-xl: 36px;
+  --text-headline-xl--line-height: 52px;
+  --text-headline-xl--font-weight: 700;
+  --text-headline-lg: 28px;
+  --text-headline-lg--line-height: 42px;
+  --text-headline-lg--font-weight: 700;
+  --text-headline-md: 22px;
+  --text-headline-md--line-height: 34px;
+  --text-headline-md--font-weight: 700;
+  --text-section-title: 18px;
+  --text-section-title--line-height: 28px;
+  --text-section-title--font-weight: 700;
+  --text-body-lg: 18px;
+  --text-body-lg--line-height: 32px;
+  --text-body-md: 16px;
+  --text-body-md--line-height: 28px;
+  --text-body-sm: 14px;
+  --text-body-sm--line-height: 24px;
+  --text-label-md: 14px;
+  --text-label-md--line-height: 22px;
+  --text-label-md--font-weight: 700;
+  --text-label-sm: 12px;
+  --text-label-sm--line-height: 18px;
+  --text-label-sm--font-weight: 700;
 }
 
 /* Page container: centred, max 1280px wide, with side padding that grows on larger screens. */
@@ -48,7 +90,7 @@ html[lang='ar'] {
 
 @layer base {
   html {
-    @apply bg-surface text-ink antialiased;
+    @apply bg-background text-on-surface antialiased;
     scroll-behavior: smooth;
   }
 
@@ -57,6 +99,6 @@ html[lang='ar'] {
   }
 
   :focus-visible {
-    @apply outline-2 outline-offset-2 outline-primary;
+    @apply outline-2 outline-offset-2 outline-secondary;
   }
 }

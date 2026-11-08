@@ -1,0 +1,25 @@
+{
+  "metaTitle": "Sign in",
+  "title": "Staff Portal",
+  "subtitle": "Sign in to manage your committee's content",
+  "email": "Email",
+  "emailPlaceholder": "name@seebhealthy.om",
+  "password": "Password",
+  "show": "Show",
+  "hide": "Hide",
+  "remember": "Remember me",
+  "forgot": "Forgot your password?",
+  "forgotHelp": "To reset your password, contact technical support:",
+  "submit": "Sign in",
+  "submitting": "Signing in…",
+  "slogan": "From the community, for the community",
+  "copyright": "© {year} Healthy Seeb",
+  "errors": {
+    "required": "Please enter your email and password.",
+    "invalid": "The email or password is incorrect.",
+    "inactive": "This account is not active. Please contact technical support.",
+    "noCommittee": "Your account isn't linked to a committee. Please contact the portal administrator.",
+    "locked": "This account is temporarily locked after too many sign-in attempts. Please try again later.",
+    "generic": "Sign-in failed. Please try again."
+  }
+}

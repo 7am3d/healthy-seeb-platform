@@ -18,9 +18,9 @@ export default async function HomePage({ params }: Props) {
 
   return (
     <section className="container-page py-16">
-      <h1 className="text-3xl font-bold text-primary-dark sm:text-4xl">{t('title')}</h1>
-      <p className="mt-4 max-w-2xl text-lg text-muted">{t('intro')}</p>
-      <LocaleSwitcher className="mt-8 inline-flex items-center rounded-md border border-border px-4 py-2 font-medium text-primary hover:bg-primary-light" />
+      <h1 className="text-3xl font-bold text-primary sm:text-4xl">{t('title')}</h1>
+      <p className="mt-4 max-w-2xl text-lg text-on-surface-variant">{t('intro')}</p>
+      <LocaleSwitcher className="mt-8 inline-flex items-center rounded-md border border-outline-variant px-4 py-2 font-medium text-primary hover:bg-surface-container-low" />
     </section>
   )
 }

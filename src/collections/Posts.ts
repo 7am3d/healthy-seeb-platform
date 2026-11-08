@@ -265,6 +265,8 @@ export const Posts: CollectionConfig = {
         { label: 'Announcement', value: 'announcement' },
         { label: 'News', value: 'news' },
         { label: 'Activity', value: 'activity' },
+        // Staff portal: "Report" (تقرير) post type from the UI/UX design.
+        { label: 'Report', value: 'report' },
         { label: 'General', value: 'general' },
       ],
     },

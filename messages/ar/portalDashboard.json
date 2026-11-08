@@ -1,0 +1,24 @@
+{
+  "metaTitle": "لوحة التحكم",
+  "title": "لوحة التحكم",
+  "welcome": "أهلًا {name}، تابع وأدر منشورات وأنشطة {committee}",
+  "cards": {
+    "events": {
+      "title": "الفعاليات",
+      "caption": "فعالية مسجلة"
+    },
+    "announcements": {
+      "title": "الإعلانات",
+      "caption": "إعلان مسجل"
+    },
+    "reports": {
+      "title": "التقارير",
+      "caption": "تقرير ووثيقة"
+    }
+  },
+  "latest": {
+    "title": "آخر المنشورات",
+    "subtitle": "أحدث محتويات {committee}",
+    "viewAll": "عرض كل المنشورات ←"
+  }
+}

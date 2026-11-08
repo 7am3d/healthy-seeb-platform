@@ -6,17 +6,11 @@ import React from 'react'
 
 import { localeDirection, routing } from '@/i18n/routing'
 
-// Self-hosted fonts (served from our own site, no Google Fonts request).
-// Placeholder fonts from the same family, so Arabic and English look consistent.
-// Swap these if the UI/UX team picks different fonts, and update --font-* in styles.css.
-import '@fontsource/ibm-plex-sans-arabic/400.css'
-import '@fontsource/ibm-plex-sans-arabic/500.css'
-import '@fontsource/ibm-plex-sans-arabic/600.css'
-import '@fontsource/ibm-plex-sans-arabic/700.css'
-import '@fontsource/ibm-plex-sans/400.css'
-import '@fontsource/ibm-plex-sans/500.css'
-import '@fontsource/ibm-plex-sans/600.css'
-import '@fontsource/ibm-plex-sans/700.css'
+// Self-hosted Almarai font (the font in the UI/UX design), served from our own site.
+import '@fontsource/almarai/300.css'
+import '@fontsource/almarai/400.css'
+import '@fontsource/almarai/700.css'
+import '@fontsource/almarai/800.css'
 
 import '../styles.css'
 
@@ -60,18 +54,18 @@ export default async function LocaleLayout({ children, params }: Props) {
   const t = await getTranslations({ locale, namespace: 'common' })
 
   return (
-    <html lang={locale} dir={localeDirection[locale]}>
+    <html lang={locale} dir={localeDirection[locale]} data-scroll-behavior="smooth">
       <body>
         <NextIntlClientProvider>
           <a
             href="#main-content"
-            className="sr-only focus:not-sr-only focus:absolute focus:start-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-surface focus:px-4 focus:py-2 focus:shadow"
+            className="sr-only focus:not-sr-only focus:absolute focus:start-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-surface-container-lowest focus:px-4 focus:py-2 focus:shadow"
           >
             {t('skipToContent')}
           </a>
-          {/* Shared header goes here */}
-          <main id="main-content">{children}</main>
-          {/* Shared footer goes here */}
+          {/* Each area adds its own header and <main id="main-content">:
+              (site)/layout.tsx for the public website, portal/ for the staff portal. */}
+          {children}
         </NextIntlClientProvider>
       </body>
     </html>
