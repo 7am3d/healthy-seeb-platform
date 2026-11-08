@@ -1,0 +1,19 @@
+{
+  "metaTitle": "Posts",
+  "titles": {
+    "all": "All posts",
+    "activity": "Events",
+    "announcement": "Announcements",
+    "report": "Reports"
+  },
+  "tabs": {
+    "all": "Posts",
+    "activity": "Events",
+    "announcement": "Announcements",
+    "report": "Reports"
+  },
+  "filterLabel": "Filter by type",
+  "search": "Search by title…",
+  "searchLabel": "Search by title",
+  "noResults": "No matching posts."
+}

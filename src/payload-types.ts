@@ -224,7 +224,7 @@ export interface Post {
     };
     [k: string]: unknown;
   };
-  type: 'announcement' | 'news' | 'activity' | 'general';
+  type: 'announcement' | 'news' | 'activity' | 'report' | 'general';
   committee: number | Committee;
   author: number | User;
   status: 'draft' | 'submitted' | 'approved' | 'rejected';

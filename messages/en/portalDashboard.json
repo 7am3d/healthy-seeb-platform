@@ -1,0 +1,24 @@
+{
+  "metaTitle": "Dashboard",
+  "title": "Dashboard",
+  "welcome": "Welcome, {name}. Follow and manage the posts and activities of {committee}.",
+  "cards": {
+    "events": {
+      "title": "Events",
+      "caption": "Registered events"
+    },
+    "announcements": {
+      "title": "Announcements",
+      "caption": "Registered announcements"
+    },
+    "reports": {
+      "title": "Reports",
+      "caption": "Reports and documents"
+    }
+  },
+  "latest": {
+    "title": "Latest posts",
+    "subtitle": "The newest content from {committee}",
+    "viewAll": "View all posts →"
+  }
+}
