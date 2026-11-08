@@ -89,3 +89,14 @@ export async function requireStaffSession(locale: Locale): Promise<StaffSession>
 
   return session as StaffSession
 }
+
+/** For server actions: the signed-in, active committee member, or null (never redirects). */
+export async function getStaffSession(): Promise<StaffSession | null> {
+  const session = await getPortalSession()
+  if (!session?.user.isActive || !session.membership) return null
+  return session as StaffSession
+}
+
+/** Chairs and rapporteurs can edit their committee's public page. */
+export const canEditCommitteePage = (session: StaffSession) =>
+  session.membership.role === 'chair' || session.membership.role === 'rapporteur'

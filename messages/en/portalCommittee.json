@@ -1,0 +1,70 @@
+{
+  "metaTitle": "Committee page",
+  "crumbPortal": "Staff portal",
+  "crumbHere": "Reference content",
+  "title": "Edit the committee page",
+  "intro": "Update the details, members and responsibilities of the {committee} shown to the public on the official website",
+  "status": {
+    "published": "Page status: published and live on the public website",
+    "pending": "Page status: changes are waiting for the portal administrator's approval",
+    "updated": "Last updated: {date}",
+    "saved": "Changes last saved: {date}",
+    "viewPage": "View the public page"
+  },
+  "readOnly": "Only the committee chair or rapporteur can edit the committee page.",
+  "description": {
+    "label": "Committee description",
+    "hint": "A short introduction to the committee's vision and mission for visitors, partners and citizens.",
+    "limit": "Recommended: up to 150 characters",
+    "count": "{countText} characters"
+  },
+  "leadership": {
+    "title": "Committee leadership",
+    "hint": "Official details and direct contact for the committee chair and its rapporteur for Seeb.",
+    "chair": "Committee chair",
+    "chairHint": "Official title as stated in the administrative decision",
+    "chairEmail": "Chair's email",
+    "chairEmailHint": "The approved official correspondence channel",
+    "rapporteur": "Committee rapporteur",
+    "rapporteurHint": "Responsible for the minutes and administrative coordination",
+    "rapporteurTitle": "Rapporteur's job title",
+    "rapporteurTitleHint": "Employer and field of work"
+  },
+  "members": {
+    "title": "Committee members",
+    "hint": "Medical and administrative staff representing the centres and sectors of Seeb.",
+    "count": "{count, plural, =0 {No members} one {1 member} other {{countText} members}}",
+    "name": "Full name",
+    "jobTitle": "Job title and organisation",
+    "action": "Action",
+    "namePlaceholder": "Member name",
+    "jobTitlePlaceholder": "Job title and organisation",
+    "nameLabel": "Member {number} name",
+    "jobTitleLabel": "Member {number} job title",
+    "add": "+ Add a new member"
+  },
+  "responsibilities": {
+    "title": "Committee responsibilities",
+    "hint": "The tasks and responsibilities of the {committee} towards Healthy Seeb's health indicators.",
+    "count": "{count, plural, =0 {No items} one {1 item} other {{countText} items}}",
+    "placeholder": "Write the responsibility…",
+    "itemLabel": "Responsibility {number}",
+    "add": "+ Add a new item"
+  },
+  "delete": "Delete",
+  "deleteMember": "Delete member {number}",
+  "deleteItem": "Delete responsibility {number}",
+  "footerNote": "Changes appear on the public committee page after the portal administrator approves them",
+  "cancel": "Discard changes",
+  "save": "Save changes",
+  "saving": "Saving…",
+  "toast": "Changes saved and sent for approval.",
+  "errors": {
+    "email": "Please enter a valid email address",
+    "description": "The description is longer than 300 characters",
+    "auth": "Your session has ended, please sign in again.",
+    "forbidden": "You do not have permission to edit the committee page.",
+    "invalid": "Please check the highlighted fields.",
+    "generic": "The changes could not be saved, please try again."
+  }
+}
