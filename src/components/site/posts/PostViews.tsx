@@ -26,8 +26,9 @@ const onEnterOrSpace = (action: () => void) => (event: React.KeyboardEvent) => {
 
 function Cover({ post, className }: { post: SitePost; className: string }) {
   if (!post.cover) return null
-  // eslint-disable-next-line @next/next/no-img-element
   return (
+    // Payload media URLs; next/image is not used so the prototype's object-cover sizing stays the same.
+    // eslint-disable-next-line @next/next/no-img-element
     <img
       src={post.cover.cardUrl ?? post.cover.url}
       alt={post.cover.alt || post.title}

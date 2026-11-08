@@ -2,10 +2,6 @@
   "siteName": "السيب الصحية",
   "siteDescription": "الموقع الرسمي لمكتب ولاية السيب الصحية.",
   "skipToContent": "الانتقال إلى المحتوى الرئيسي",
-  "languageSwitcher": {
-    "label": "تغيير اللغة",
-    "switchTo": "English"
-  },
   "notFound": {
     "title": "الصفحة غير موجودة",
     "description": "الصفحة التي تبحث عنها غير موجودة أو تم نقلها.",

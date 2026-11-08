@@ -11,7 +11,7 @@ cp .env.example .env        # then fill in the values
 docker compose up -d        # starts PostgreSQL on port 5433
 npm install
 npm run dev                 # http://localhost:3000 → redirects to /ar
-npm run seed:dev            # once: test accounts, 7 committees, sample posts
+npm run seed:dev            # once: test accounts, 7 committees, posts, map places, requests
 ```
 
 - Public website: `http://localhost:3000/ar` and `http://localhost:3000/en`
@@ -36,26 +36,35 @@ messages/
   en/<namespace>.json          English text, same keys as Arabic
 src/
   app/(frontend)/
-    styles.css                 Tailwind + design tokens (colours, fonts)
+    styles.css                 Tailwind + design tokens (colours, spacing, type scale)
     [locale]/
       layout.tsx               <html lang dir>, fonts (no header/footer)
       not-found.tsx            Translated 404 page
-      (site)/                  Public website: its layout adds the public header/footer
-        page.tsx               Home page  →  /ar, /en
-        committees/page.tsx    Example    →  /ar/committees
+      (site)/                  Public website: its layout adds the header, footer and dialogs
+        page.tsx               Home              →  /ar, /en
+        about/page.tsx         About us          →  /ar/about
+        committees/[code]/     Committee page    →  /ar/committees/health (one template, 7 committees)
+        news/page.tsx          News & events     →  /ar/news?type=activity
+        actions.ts             "Contribute" and "Suggestion" forms → saved to `requests`
       portal/
         login/                 Shared login for staff and admins  →  /ar/portal/login
         actions.ts             Login / logout server actions
         (staff)/               Staff portal: layout checks the login and draws the sidebar
-          page.tsx             Staff dashboard  →  /ar/portal
-          posts/page.tsx       Posts list       →  /ar/portal/posts?type=report
+          page.tsx             Dashboard            →  /ar/portal
+          posts/page.tsx       Posts list           →  /ar/portal/posts?type=report
+          posts/new/           Add post             →  /ar/portal/posts/new?type=report
+          posts/[id]/edit/     Edit draft/rejected  →  /ar/portal/posts/12/edit
+          posts/actions.ts     Upload a file, save a post (draft / submit for approval)
+          committee/           Committee page editor (saves a draft)  →  /ar/portal/committee
+          referrals/           Requests referred by the admin          →  /ar/portal/referrals
         admin/                 Admin portal (its own layout)  →  /ar/portal/admin
   app/(payload)/               Payload admin + API (do not edit by hand)
+  access/roles.ts              Shared access helpers (isAdministrator, committee memberships)
+  collections/                 Payload collections (Posts, Committees, Requests, Places, Media, ...)
   components/
-    layout/                    Header, footer, language switcher (shared)
-    portal/                    Portal shell (sidebar + header), posts table, status chips
-    <page-name>/               Components used by one page only
-    ui/                        Small reusable pieces (buttons, cards)
+    site/                      Public header, footer, dialogs, map, post cards, committee tabs
+    portal/                    Portal shell, posts table, post form, committee editor, referrals
+    ui/                        Icon (Material Symbols as inline SVG), Dialog (native <dialog>)
   i18n/
     routing.ts                 Languages: ar (default) and en
     messages.ts                Registers every translation file
@@ -63,15 +72,17 @@ src/
     request.ts                 Loads the text for each request
   lib/
     format.ts                  digits(): Arabic-Indic digits on Arabic pages
+    site/queries.ts            Public queries (anonymous access rules)
     portal/session.ts          Who is signed in, their role and committee
     portal/posts.ts            Post queries for the portal
-  scripts/seed-dev.ts          Local test data (npm run seed:dev)
+    portal/rich-text.ts        Post form text (**bold**, - lists) ⇄ Payload rich text
+  scripts/seed-dev.ts          Local test data (npm run seed:dev, data in seed-data.json)
   proxy.ts                     Redirects / to /ar or /en
 public/brand/                  Logos from the UI/UX prototype
 ```
 
 Each developer works in their own page folders and their own message files.
-Only touch shared files (`layout.tsx`, `components/layout/`, `styles.css`, `messages.ts`) when you need to, and tell your partner first.
+Only touch shared files (`layout.tsx`, `styles.css`, `messages.ts`, `collections/`) when you need to, and tell your partner first.
 
 ## Rule 1: no hard-coded text
 
@@ -136,17 +147,18 @@ Use the token classes instead of raw hex values, so a palette change happens in 
 
 The prototype (`alyaqeenkhalid.github.io/seebwebsiteinternal`) uses the same colour names, so most classes copy across. A few need translating:
 
-| Prototype                                        | Our project                            |
-| ------------------------------------------------ | -------------------------------------- |
-| `font-body-md text-body-md` (two classes)        | `text-body-md`                         |
-| `rounded-lg` (4px there)                         | `rounded-sm`                           |
-| `rounded-xl` (8px there)                         | `rounded-lg`                           |
-| `rounded` (2px there)                            | `rounded-xs`                           |
-| `rounded-[9999px]`                               | `rounded-full`                         |
-| `px-space-md` / `px-space-lg` / `px-space-xl`    | `px-4` / `px-6` / `px-10`              |
-| `gap-space-xs` / `gap-space-sm`                  | `gap-1` / `gap-2`                      |
-| `bg-[#116e68]` / `bg-[#b79f7d]` / `bg-[#EEF6F2]` | `bg-secondary` / `bg-sand` / `bg-mint` |
-| `right-0`, `pr-72`, `text-right`                 | `start-0`, `ps-72`, `text-start`       |
+| Prototype                                        | Our project                                                            |
+| ------------------------------------------------ | ---------------------------------------------------------------------- |
+| `font-body-md text-body-md` (two classes)        | `text-body-md`                                                         |
+| `rounded-lg` (4px there)                         | `rounded-sm`                                                           |
+| `rounded-xl` (8px there)                         | `rounded-lg`                                                           |
+| `rounded` (2px there)                            | `rounded-xs`                                                           |
+| `rounded-full` (12px there)                      | `rounded-xl`                                                           |
+| `rounded-[9999px]`                               | `rounded-full`                                                         |
+| `px-space-md`, `gap-space-sm`, `p-space-lg`, ... | same (spacing tokens exist)                                            |
+| `bg-[#116e68]` / `bg-[#b79f7d]` / `bg-[#EEF6F2]` | `bg-secondary` / `bg-sand` / `bg-mint`                                 |
+| `right-0`, `pr-72`, `text-right`                 | `start-0`, `ps-72`, `text-start`                                       |
+| `<span class="material-symbols-outlined">map`    | `<Icon name="map" />` (add new icons to `components/ui/icon-paths.ts`) |
 
 ### Numbers and dates in Arabic
 
@@ -185,6 +197,29 @@ The Local API **skips access control by default**. On public pages, always pass 
 - In a staff page or layout, call `requireStaffSession(locale)` from `@/lib/portal/session`. It redirects to the login page if needed and returns the user and their committee.
 - The admin portal should have its own check (e.g. a `requireAdminSession` next to it) that only lets `globalRole` administrator/super-admin in.
 - Query data **as the signed-in user** (`user: session.user, overrideAccess: false`) so the collection access rules apply. See `src/lib/portal/posts.ts`.
+
+## How the website and the portal connect
+
+Everything the public sees comes from Payload, and the portal screens write to the same collections:
+
+| Public website                                  | Comes from                               | Edited in                                                                                               |
+| ----------------------------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| Events, announcements, reports (+ news page)    | `posts` with status `approved`           | Staff: Add post → admin approves (Payload admin for now)                                                |
+| Committee page (members, responsibilities, ...) | `committees`, **published** version      | Staff chair/rapporteur: Committee page → saved as draft → admin publishes                               |
+| Home map and committee maps                     | `places` (`showOnHomeMap`, `committees`) | Payload admin                                                                                           |
+| "Contribute with us" and "Submit a suggestion"  | create `requests` (status `new`)         | Admin refers a request to a committee (`reviewStatus: referred`) → staff follow up in Referred requests |
+
+- **Committees use Payload drafts.** Staff saves only write a draft version; the public page keeps the published one until an administrator presses _Publish changes_ (in `/admin` until the admin portal screen exists). The Committees `beforeChange` hook refuses non-draft saves from staff.
+- **Posts:** staff can create posts and edit their own `draft`/`rejected` posts; they can only set the status to `draft` or `submitted`. Approving/rejecting is for administrators.
+- **Requests:** only the public form server actions create them (validated, honeypot field, 5 per 10 minutes per IP). Staff see requests referred to their committee only, can change `followUpStatus` and add notes (earlier notes cannot be changed). `referralNote` is the admin's note shown to the committee; `adminNotes` stays private.
+- **Media:** signed-in users can upload; only administrators can change or delete files. Staff uploads go through `uploadPostFile` (photos ≤ 5 MB, PDF ≤ 20 MB) one file at a time.
+
+## Before deploying (team lead)
+
+- Create Payload migrations (`npm run payload migrate:create`) – development only uses automatic schema push.
+- Uploads are stored on the local disk (`/media`). On Vercel the disk is not kept, so add a storage adapter (e.g. `@payloadcms/storage-vercel-blob` or S3). Vercel also limits a request body to **4.5 MB**, so large PDFs need the adapter's client uploads.
+- The forms' rate limit is in memory (per server instance). Use a shared store (e.g. Upstash Redis) if spam becomes a problem.
+- The map uses CARTO / Esri tiles (with attribution) and the committee maps embed Google Maps; check their terms for production traffic.
 
 ## Git workflow
 
