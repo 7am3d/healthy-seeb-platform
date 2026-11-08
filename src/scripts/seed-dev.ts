@@ -178,6 +178,7 @@ for (const item of seed.committees) {
       chairName: item.chairName,
       chairTitle: item.chairTitle,
       chairEmail: item.chairEmail,
+      email: `${item.code}.committee@seebhealthy.om`,
       rapporteurName: item.rapporteurName,
       rapporteurTitle: item.rapporteurTitle,
       members: item.members,

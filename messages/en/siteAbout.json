@@ -1,0 +1,120 @@
+{
+  "metaTitle": "About us",
+  "breadcrumb": "About us",
+  "slogan": "From the community, for the community",
+  "title": "About us",
+  "subtitle": "About the Healthy Seeb initiative: our vision, our mission and how the community and institutions work together towards a sustainable healthy wilayat.",
+  "introTitle": "A healthy wilayat that raises the quality of life and puts people at the centre of development",
+  "introText": "An accredited healthy-wilayat project that creates an environment supporting health and sustainable development, by empowering the local community and building integrated partnerships between the government, civil and private sectors in Wilayat Seeb.",
+  "vision": {
+    "badge": "Community development movement",
+    "title": "Our vision",
+    "text": "A comprehensive community development movement that aims to make Wilayat Seeb a national and regional model of a sustainable healthy city, built on social justice, healthy urban planning and active partnership between all sectors, reflecting the core pillars of Oman Vision 2040."
+  },
+  "mission": {
+    "badge": "Participatory approach",
+    "title": "Our mission",
+    "text": "Health is more than the absence of disease, and 80% of what determines our health is shaped outside the Ministry of Health and traditional healthcare. That is why Healthy Seeb follows a “Health in All Policies” approach: we bring different sectors together to improve public health, support sustainable urban growth and build an active community partnership that ensures a healthy, fair environment for everyone in the wilayat."
+  },
+  "valuesTitle": "Core values",
+  "values": [
+    {
+      "title": "Integration",
+      "text": "Health is everyone's responsibility"
+    },
+    {
+      "title": "Sustainability",
+      "text": "Urban and environmental planning that serves future generations"
+    },
+    {
+      "title": "Participation",
+      "text": "The community is a partner, not just a recipient"
+    },
+    {
+      "title": "Fairness",
+      "text": "A healthy, fair environment for every neighbourhood of the wilayat"
+    }
+  ],
+  "affiliation": {
+    "title": "Global membership and strategic partnership",
+    "text": "The initiative is part of the Healthy Cities Network of the World Health Organization's Eastern Mediterranean Region (WHO/EMRO). The letter of cooperation and membership was officially signed on 10 December 2025, making Wilayat Seeb part of the global movement that strengthens cooperation between sectors to meet modern urban challenges."
+  },
+  "executive": {
+    "title": "Executive committee",
+    "subtitle": "The executive committee was formed by administrative decision and is chaired by His Excellency the Wali of Seeb, to ensure the initiative's goals are delivered scientifically and in practice",
+    "chair": {
+      "role": "Chair",
+      "name": "H.E. Ahmed bin Ali bin Hamdan Al Shehhi",
+      "title": "Wali of Seeb, Chair of the Healthy Seeb Committee"
+    },
+    "vice": {
+      "role": "Vice chair",
+      "name": "Sheikh Al Mutasim bin Abdullah bin Khalfan Al Siyabi",
+      "title": "Deputy Wali of Seeb"
+    },
+    "office": {
+      "role": "Head of the executive office",
+      "name": "Dr. Alya bint Ali bin Abdullah Al Hasni",
+      "title": "Senior Consultant Physician, Ministry of Health",
+      "contact": "Contact the executive office",
+      "email": "executive.office@seebhealthy.om"
+    },
+    "members": [
+      {
+        "org": "Ministry of Health",
+        "name": "Dr. Maryam bint Ahmed bin Saeed Al Hinaiya",
+        "role": "Director, Third Health Cluster"
+      },
+      {
+        "org": "Royal Oman Police",
+        "name": "Lt. Col. (Staff) Khalid bin Mohammed Al Amri",
+        "role": "Officer, Seeb Police Station"
+      },
+      {
+        "org": "Ministry of Education",
+        "name": "Fahad bin Hamad bin Matar Al Kalbani",
+        "role": "Director of Education, Seeb"
+      },
+      {
+        "org": "Ministry of Social Development",
+        "name": "Ali bin Muslim bin Salim Al Amri",
+        "role": "Assistant Director, Partnership and Civil Society Development"
+      },
+      {
+        "org": "Seeb Club",
+        "name": "Yousuf bin Abdullah Al Wahaibi",
+        "role": "Vice Chairman of the Board"
+      },
+      {
+        "org": "Consumer Protection Authority",
+        "name": "Mahmoud bin Hamad bin Salim Al Badi",
+        "role": ""
+      },
+      {
+        "org": "Municipal Council",
+        "name": "Abdulrahman bin Nasser Al Hinai",
+        "role": "Representative of Wilayat Seeb"
+      },
+      {
+        "org": "Directorate General of Muscat Municipality, Seeb",
+        "name": "Musa bin Mohammed Al Saqri",
+        "role": "Deputy Director General"
+      },
+      {
+        "org": "Omani Women's Association, Seeb",
+        "name": "Fatima bint Khamis Al Salami",
+        "role": ""
+      },
+      {
+        "org": "Ministry of Health",
+        "name": "Aida bint Saleh bin Saeed Al Rahbi",
+        "role": "Head of Community Health, Third Health Cluster (Rapporteur)"
+      }
+    ]
+  },
+  "subcommittees": {
+    "title": "Subcommittees",
+    "subtitle": "Seven specialised subcommittees covering every aspect of life in the wilayat",
+    "viewDetails": "View details"
+  }
+}

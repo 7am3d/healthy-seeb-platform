@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@plugin '@tailwindcss/forms';
 
 /*
  * Design tokens from the UI/UX prototype (alyaqeenkhalid.github.io/seebwebsiteinternal).
@@ -29,6 +30,30 @@
   --color-outline: #71787e;
   --color-outline-variant: #c1c7ce;
 
+  /* Remaining prototype palette (Material tokens), so prototype classes port over as-is */
+  --color-primary-container: #014260;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #7eaed1;
+  --color-primary-fixed: #c8e6ff;
+  --color-primary-fixed-dim: #9cccf0;
+  --color-inverse-primary: #9cccf0;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #a1f1e9;
+  --color-on-secondary-container: #15706a;
+  --color-secondary-fixed: #a1f1e9;
+  --color-secondary-fixed-dim: #85d4cd;
+  --color-tertiary: #34250c;
+  --color-tertiary-container: #4c3b20;
+  --color-tertiary-fixed: #fadeb9;
+  --color-tertiary-fixed-dim: #ddc39f;
+  --color-surface-bright: #f5faff;
+  --color-surface-dim: #ccdce8;
+  --color-surface-container-highest: #d4e5f1;
+  --color-surface-tint: #316383;
+  --color-inverse-surface: #23323b;
+  --color-inverse-on-surface: #e3f3ff;
+  --color-on-background: #0e1d26;
+
   /* Status */
   --color-error: #ba1a1a;
   --color-error-container: #ffdad6;
@@ -39,6 +64,15 @@
   --color-warning: #8a6d45;
   --color-warning-container: #fbf4ea;
 
+  /* Prototype spacing names: p-space-md, gap-space-lg, px-margin, gap-gutter ... */
+  --spacing-space-xs: 0.25rem;
+  --spacing-space-sm: 0.5rem;
+  --spacing-space-md: 1rem;
+  --spacing-space-lg: 1.5rem;
+  --spacing-space-xl: 2.5rem;
+  --spacing-gutter: 1.5rem;
+  --spacing-margin: 2rem;
+
   /* Font: Almarai (Arabic + Latin), files imported in [locale]/layout.tsx */
   --font-sans: 'Almarai', system-ui, sans-serif;
 
@@ -46,6 +80,12 @@
   --text-display-lg: 48px;
   --text-display-lg--line-height: 68px;
   --text-display-lg--font-weight: 800;
+  --text-display-lg-mobile: 32px;
+  --text-display-lg-mobile--line-height: 48px;
+  --text-display-lg-mobile--font-weight: 800;
+  --text-headline-xl-mobile: 26px;
+  --text-headline-xl-mobile--line-height: 40px;
+  --text-headline-xl-mobile--font-weight: 700;
   --text-headline-xl: 36px;
   --text-headline-xl--line-height: 52px;
   --text-headline-xl--font-weight: 700;

@@ -149,6 +149,12 @@ export const Committees: CollectionConfig = {
           access: { update: adminOnlyField },
         },
         {
+          name: 'email',
+          type: 'email',
+          label: 'Committee email',
+          admin: { description: 'Used by the "Contact the committee" button on the public page.' },
+        },
+        {
           type: 'row',
           fields: [
             { name: 'chairName', type: 'text', label: 'Chair' },

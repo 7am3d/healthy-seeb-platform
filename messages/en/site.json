@@ -1,0 +1,179 @@
+{
+  "brand": "Healthy Seeb",
+  "logoAlt": "Healthy Seeb logo",
+  "nav": {
+    "label": "Main menu",
+    "home": "Home",
+    "about": "About us",
+    "committees": "Committees",
+    "news": "News & events",
+    "map": "Map",
+    "contact": "Contact us",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "switchLanguage": "العربية",
+    "switchLanguageLabel": "التبديل إلى العربية",
+    "staffPortal": "Staff portal"
+  },
+  "breadcrumb": {
+    "label": "Breadcrumb",
+    "home": "Home",
+    "committees": "Committees"
+  },
+  "footer": {
+    "about": "A community health initiative that promotes sustainable, healthy lifestyles and a better quality of life in Wilayat Seeb, working with every sector and institution involved.",
+    "quickLinks": "Quick links",
+    "links": {
+      "home": "Home",
+      "about": "About us",
+      "committees": "Committees",
+      "map": "Interactive map",
+      "media": "Media centre",
+      "privacy": "Privacy policy",
+      "terms": "Terms and conditions"
+    },
+    "contactTitle": "Contact details",
+    "address": "Sultanate of Oman - Muscat Governorate - Wilayat Seeb",
+    "email": "Email:",
+    "phone": "Phone:",
+    "partnershipTitle": "Community partnership",
+    "partnershipText": "We welcome companies and institutions that wish to sponsor, partner or donate, and individuals and volunteer teams who want to help build a healthy Wilayat Seeb.",
+    "contribute": "Contribute with us",
+    "rights": "All rights reserved © Healthy Seeb.",
+    "vision": "Sultanate of Oman - Oman Vision 2040"
+  },
+  "terms": {
+    "title": "Terms and conditions",
+    "intro": "By using the Healthy Seeb website, you agree to the following:",
+    "items": [
+      "Content on this website is for awareness and to introduce the initiative and its committees. It is not a substitute for specialist medical advice.",
+      "All text, images, logos and reports published here belong to Healthy Seeb. They may not be republished for commercial purposes without prior permission, but may be shared for awareness purposes with the source credited.",
+      "When sending suggestions or complaints, users must provide accurate information and must not send offensive content or anything that breaks the laws of the Sultanate of Oman.",
+      "Personal data sent through the website (such as your name and email) is used only to contact you and handle suggestions and complaints, and is not shared with any third party except as required by law.",
+      "The initiative works to keep information accurate and up to date, but is not responsible for unintended errors or for the content of linked external websites.",
+      "Healthy Seeb may change these terms at any time. Continuing to use the website means you accept the changes."
+    ],
+    "ok": "OK"
+  },
+  "close": "Close",
+  "contribute": {
+    "title": "Contribute with us",
+    "intro": "Whether you are an individual who wants to volunteer, or a company or organisation interested in sponsoring, partnering or donating, we'd love to hear from you.",
+    "whoLabel": "Who is applying",
+    "individual": "Individual / volunteer team",
+    "organization": "Company / organisation",
+    "nameIndividual": "Full name",
+    "nameOrganization": "Company / organisation name",
+    "email": "Email",
+    "emailPlaceholder": "name@example.com",
+    "phone": "Phone number",
+    "optional": "(optional)",
+    "phonePlaceholder": "+968",
+    "type": "Type of contribution",
+    "types": {
+      "volunteering": "Volunteering",
+      "sponsorship": "Sponsorship",
+      "partnership": "Partnership",
+      "donation": "Donation"
+    },
+    "committee": "Related committee",
+    "committeeNone": "Not specified",
+    "description": "Short description",
+    "descriptionPlaceholder": "How would you like to contribute?",
+    "agreeBefore": "I agree to the",
+    "terms": "terms and conditions",
+    "submit": "Send request",
+    "submitting": "Sending…",
+    "orEmail": "Or email us at",
+    "errors": {
+      "name": "Please enter your name.",
+      "email": "Please enter a valid email address.",
+      "description": "Please write a short description of your contribution.",
+      "terms": "Please accept the terms and conditions.",
+      "rateLimit": "Several requests were sent from your device. Please try again shortly.",
+      "generic": "Your request could not be sent. Please try again."
+    },
+    "doneTitle": "Thank you!",
+    "doneText": "We've received your request. The Healthy Seeb team will contact you after reviewing it."
+  },
+  "suggest": {
+    "title": "Submit a suggestion",
+    "name": "Name",
+    "optional": "(optional)",
+    "email": "Email",
+    "message": "Your suggestion",
+    "submit": "Send",
+    "submitting": "Sending…",
+    "errors": {
+      "email": "Please enter a valid email address",
+      "message": "Please write your suggestion",
+      "rateLimit": "Several suggestions were sent from your device. Please try again shortly.",
+      "generic": "Your suggestion could not be sent. Please try again."
+    },
+    "done": "Thank you, we've received your suggestion."
+  },
+  "emailModal": {
+    "title": "Contact the committee",
+    "chairOf": "Chair of {committee}",
+    "copy": "Copy",
+    "copied": "Copied ✓",
+    "open": "Open email"
+  },
+  "post": {
+    "types": {
+      "activity": "Event",
+      "announcement": "Announcement",
+      "report": "Report",
+      "news": "News",
+      "general": "General"
+    },
+    "readDetails": "Read more →",
+    "details": "Details →",
+    "viewDetails": "View details",
+    "new": "New",
+    "coverAlt": "Post cover image",
+    "viewImage": "⤢ View image",
+    "gallery": "Photo gallery",
+    "galleryAlt": "Photo {number} of {title}",
+    "officialDocument": "Official document",
+    "download": "Download",
+    "watchOn": "See this post on:",
+    "links": {
+      "instagram": "Instagram",
+      "youtube": "YouTube",
+      "x": "X",
+      "press": "Newspaper / interview"
+    },
+    "close": "Close",
+    "previous": "Previous",
+    "next": "Next",
+    "date": "Date",
+    "location": "Location"
+  },
+  "fileSize": {
+    "mb": "{size} MB",
+    "kb": "{size} KB"
+  },
+  "placeCategories": {
+    "hospital": "Hospitals",
+    "health-center": "Health centres",
+    "pharmacy": "Pharmacies",
+    "school": "Schools",
+    "university": "Universities and colleges",
+    "kindergarten": "Kindergartens",
+    "police": "Police stations",
+    "civil-defense": "Civil defence and fire",
+    "park": "Parks",
+    "beach": "Beaches",
+    "municipality": "Municipality",
+    "mall": "Shopping centres",
+    "bank": "Banks",
+    "market": "Markets",
+    "broadcaster": "Radio and TV",
+    "media-office": "Media offices",
+    "printing-press": "Printing presses",
+    "community-center": "Community centres",
+    "charity": "Charities",
+    "club": "Clubs"
+  }
+}

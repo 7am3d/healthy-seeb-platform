@@ -213,6 +213,10 @@ export interface Committee {
   shortDescription?: string | null;
   icon?: ('vital_signs' | 'school' | 'groups' | 'eco' | 'campaign' | 'trending_up' | 'warning') | null;
   sortOrder?: number | null;
+  /**
+   * Used by the "Contact the committee" button on the public page.
+   */
+  email?: string | null;
   chairName?: string | null;
   chairEmail?: string | null;
   chairTitle?: string | null;
@@ -572,6 +576,7 @@ export interface CommitteesSelect<T extends boolean = true> {
   shortDescription?: T;
   icon?: T;
   sortOrder?: T;
+  email?: T;
   chairName?: T;
   chairEmail?: T;
   chairTitle?: T;
