@@ -46,6 +46,55 @@ test.describe('Staff portal', () => {
     await expect(page.getByText('No matching posts.')).toBeVisible()
   })
 
+  test('staff save a new post as a draft, then edit it', async ({ page }) => {
+    await signIn(page, 'en')
+    await expect(page).toHaveURL(/\/en\/portal$/)
+    await page.goto(`${BASE}/en/portal/posts/new?type=announcement`)
+    await expect(page.getByRole('radio', { name: 'Announcement' })).toBeChecked()
+
+    await page.getByRole('button', { name: 'Save as draft' }).click()
+    await expect(page.getByText('Please enter a title')).toBeVisible()
+
+    const title = `E2E draft ${Date.now()}`
+    await page.fill('#post-title', title)
+    await page.fill('#post-content', 'First line\n- a list item')
+    await page.getByRole('button', { name: 'Save as draft' }).click()
+    await expect(page).toHaveURL(/\/en\/portal\/posts\/\d+\/edit$/)
+    await expect(page.locator('#post-content')).toHaveValue('First line\n- a list item')
+
+    await page.goto(`${BASE}/en/portal/posts?type=announcement`)
+    await expect(page.getByRole('cell', { name: title })).toBeVisible()
+  })
+
+  test('the committee page editor saves changes for approval', async ({ page }) => {
+    await signIn(page, 'en')
+    await expect(page).toHaveURL(/\/en\/portal$/)
+    await page.goto(`${BASE}/en/portal/committee`)
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Edit the committee page')
+
+    await page.getByRole('button', { name: 'Save changes' }).click()
+    await expect(page.getByRole('status').filter({ hasText: 'sent for approval' })).toBeVisible()
+    await expect(page.getByText('changes are waiting for the portal administrator')).toBeVisible()
+  })
+
+  test('referred requests can be filtered and followed up', async ({ page }) => {
+    await signIn(page, 'en')
+    await expect(page).toHaveURL(/\/en\/portal$/)
+    await page.goto(`${BASE}/en/portal/referrals`)
+
+    await page.getByRole('button', { name: /^Completed/ }).click()
+    await expect(page.getByRole('listitem')).toHaveCount(1)
+
+    await page.getByRole('button', { name: /^All/ }).click()
+    await page.getByRole('button', { name: 'View and follow up' }).first().click()
+    const dialog = page.getByRole('dialog')
+    await dialog.getByLabel('New follow-up note').fill('E2E follow-up note')
+    await dialog.getByRole('button', { name: 'Save follow-up' }).click()
+    await expect(dialog).toBeHidden()
+    await page.getByRole('button', { name: 'View and follow up' }).first().click()
+    await expect(page.getByRole('dialog')).toContainText('E2E follow-up note')
+  })
+
   test('signing out returns to the login page', async ({ page }) => {
     await signIn(page, 'en')
     await expect(page).toHaveURL(/\/en\/portal$/)

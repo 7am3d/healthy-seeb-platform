@@ -1,0 +1,53 @@
+{
+  "membersTitle": "Committee members",
+  "chairRole": "Committee chair",
+  "rapporteurRole": "Committee rapporteur",
+  "memberRole": "Committee member",
+  "contactChair": "Contact the chair",
+  "tabsLabel": "Committee page sections",
+  "tabs": {
+    "events": "Events",
+    "responsibilities": "Responsibilities",
+    "announcements": "Announcements",
+    "reports": "Reports",
+    "maps": "Maps"
+  },
+  "events": {
+    "title": "{committee} events",
+    "subtitle": "The committee's field and awareness activities in Wilayat Seeb",
+    "count": "{count, plural, =0 {No events} one {1 event} other {{countText} events}}",
+    "empty": "No events have been published yet."
+  },
+  "responsibilities": {
+    "title": "{committee} responsibilities",
+    "subtitle": "As set by Administrative Decision No. (1/2026) forming the Healthy Seeb Committee",
+    "empty": "The committee's responsibilities have not been added yet."
+  },
+  "announcements": {
+    "title": "Committee announcements and circulars",
+    "subtitle": "The latest guidance, notices and dates for citizens and residents",
+    "empty": "No announcements at the moment."
+  },
+  "reports": {
+    "title": "Reports and official documents",
+    "subtitle": "Plans, studies and guides issued by the committee",
+    "published": "Published: {date}",
+    "size": "Size: {size}",
+    "format": "Format: PDF",
+    "viewDownload": "View and download",
+    "empty": "No reports have been published yet."
+  },
+  "maps": {
+    "title": "{committee} maps",
+    "subtitle": "Places and facilities related to the committee in Wilayat Seeb. Choose a category to show it on the map.",
+    "frameTitle": "{committee} map",
+    "openInGoogle": "Open in Google Maps ↗",
+    "empty": "No places have been added for this committee yet."
+  },
+  "cta": {
+    "defaultPrompt": "Do you have a suggestion that would help the people of Wilayat Seeb?",
+    "defaultText": "{committee} welcomes your suggestions and initiatives.",
+    "suggest": "Submit a suggestion",
+    "contact": "Contact the committee"
+  }
+}

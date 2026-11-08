@@ -1,0 +1,64 @@
+{
+  "metaTitle": "Referred requests",
+  "crumbPortal": "Staff portal",
+  "title": "Referred requests",
+  "intro": "Partnership, volunteering, suggestion and complaint requests that the administration referred to the {committee} for follow-up",
+  "statusFilter": "Filter by follow-up status",
+  "typeFilter": "Filter by type",
+  "allTypes": "Type: all",
+  "all": "All",
+  "followUp": {
+    "new": "New",
+    "contacted": "Contacted",
+    "in-progress": "In progress",
+    "completed": "Completed"
+  },
+  "types": {
+    "partnership": "Partnership",
+    "sponsorship": "Sponsorship",
+    "donation": "Donation",
+    "volunteering": "Volunteering",
+    "suggestion": "Suggestion",
+    "complaint": "Complaint"
+  },
+  "submitters": {
+    "individual": "Individual / volunteer",
+    "organization": "Company / organisation",
+    "visitor": "Website visitor"
+  },
+  "anonymous": "Anonymous",
+  "noName": "No name given",
+  "empty": "No matching requests.",
+  "view": "View and follow up",
+  "contact": "Contact",
+  "contactLabel": "Email {name}",
+  "details": {
+    "title": "Request details",
+    "close": "Close",
+    "submitter": "Submitted by",
+    "email": "Email",
+    "phone": "Phone",
+    "referredAt": "Referred on",
+    "adminNote": "Administration note: {note}",
+    "log": "Follow-up log",
+    "noNotes": "No notes yet.",
+    "status": "Follow-up status",
+    "note": "New follow-up note",
+    "notePlaceholder": "e.g. Called them and set a meeting date",
+    "mail": "Contact by email",
+    "mailSubject": "About your request – {committee}, Healthy Seeb",
+    "save": "Save follow-up",
+    "saving": "Saving…"
+  },
+  "toast": {
+    "status": "Follow-up status changed to “{status}” – the administration can see it",
+    "note": "Follow-up note saved",
+    "nothing": "No changes to save"
+  },
+  "errors": {
+    "auth": "Your session has ended, please sign in again.",
+    "forbidden": "This request cannot be updated.",
+    "invalid": "Please check the details.",
+    "generic": "The follow-up could not be saved, please try again."
+  }
+}

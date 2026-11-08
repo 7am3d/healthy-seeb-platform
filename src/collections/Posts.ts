@@ -256,6 +256,70 @@ export const Posts: CollectionConfig = {
       type: 'richText',
       required: true,
     },
+    // ----- Staff portal "Add post" form fields (UI/UX design) -----
+    {
+      type: 'row',
+      fields: [
+        {
+          name: 'eventDate',
+          type: 'date',
+          label: 'Date',
+          admin: { description: 'Event date, or publication date for announcements and reports.' },
+        },
+        { name: 'location', type: 'text', label: 'Location', maxLength: 180 },
+      ],
+    },
+    {
+      name: 'coverImage',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'Cover image',
+      filterOptions: { mimeType: { contains: 'image' } },
+    },
+    {
+      name: 'gallery',
+      type: 'array',
+      label: 'Photo gallery',
+      maxRows: 6,
+      admin: { description: 'Up to 6 extra photos (shown for events).' },
+      fields: [
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+          required: true,
+          filterOptions: { mimeType: { contains: 'image' } },
+        },
+      ],
+    },
+    {
+      name: 'attachment',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'PDF attachment',
+      filterOptions: { mimeType: { equals: 'application/pdf' } },
+    },
+    {
+      name: 'links',
+      type: 'group',
+      label: 'Social media coverage',
+      fields: [
+        {
+          type: 'row',
+          fields: [
+            { name: 'instagram', type: 'text', label: 'Instagram' },
+            { name: 'youtube', type: 'text', label: 'YouTube' },
+          ],
+        },
+        {
+          type: 'row',
+          fields: [
+            { name: 'x', type: 'text', label: 'X' },
+            { name: 'press', type: 'text', label: 'Newspaper / media interview' },
+          ],
+        },
+      ],
+    },
     {
       name: 'type',
       type: 'select',
@@ -289,7 +353,9 @@ export const Posts: CollectionConfig = {
   required: true,
   defaultValue: 'draft',
   access: {
-    update: ({ req }) => isAdministrator(req.user),
+    // Staff may move their own draft/rejected post to "submitted"; the beforeChange
+    // hook above only lets staff use 'draft' or 'submitted', admins anything.
+    update: ({ req }) => Boolean(req.user),
   },
   options: [
     { label: 'Draft', value: 'draft' },

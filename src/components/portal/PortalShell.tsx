@@ -61,7 +61,14 @@ export function PortalShell({
     return pathname.startsWith(item.href)
   }
 
-  const initial = userName.trim().charAt(0)
+  // First letter of the name, skipping a title such as "الدكتورة" or "Dr." (as in the design).
+  const initial = userName
+    .trim()
+    .replace(
+      /^(الدكتورة|الدكتور|د\.|الفاضلة|الفاضل|الأستاذة|الأستاذ|Dr\.?|Mr\.?|Ms\.?|Mrs\.?)\s+/i,
+      '',
+    )
+    .charAt(0)
 
   return (
     <div className="min-h-screen bg-background">

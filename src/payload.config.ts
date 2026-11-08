@@ -10,6 +10,8 @@ import { Media } from './collections/Media'
 import { Committees } from './collections/Committees'
 import { CommitteeMemberships } from './collections/CommitteeMemberships'
 import { Posts } from './collections/Posts'
+import { Places } from './collections/Places'
+import { Requests } from './collections/Requests'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -27,7 +29,13 @@ export default buildConfig({
   Committees,
   CommitteeMemberships,
   Posts,
+  Requests,
+  Places,
 ],
+  upload: {
+    // Matches the portal form limits: 5 MB images, 20 MB PDFs.
+    limits: { fileSize: 20_000_000 },
+  },
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

@@ -1,0 +1,16 @@
+{
+  "metaTitle": "News & events",
+  "title": "News & events",
+  "subtitle": "The latest events, announcements and reports from the Healthy Seeb committees",
+  "filterLabel": "Filter by type",
+  "filters": {
+    "all": "All",
+    "activity": "Events",
+    "announcement": "Announcements",
+    "report": "Reports"
+  },
+  "empty": "Nothing has been published yet.",
+  "previous": "Previous",
+  "next": "Next",
+  "pageOf": "Page {page} of {total}"
+}

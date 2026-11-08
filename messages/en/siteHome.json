@@ -1,0 +1,60 @@
+{
+  "metaTitle": "Home",
+  "hero": {
+    "slogan": "From the community, for the community",
+    "title": "Healthy Seeb",
+    "intro": "A pioneering community initiative working to raise the quality of life and public health for everyone in Wilayat Seeb.",
+    "cta": "Meet the committees"
+  },
+  "committeesNav": "Committees",
+  "about": {
+    "title": "About us",
+    "intro": "An accredited healthy-wilayat project that creates an environment supporting health and sustainable development, by empowering the local community and building integrated partnerships between the government, civil and private sectors in Wilayat Seeb.",
+    "visionTitle": "Our vision",
+    "vision": "A comprehensive community development movement that aims to make Wilayat Seeb a national and regional model of a sustainable healthy city, built on social justice, healthy urban planning and active partnership between all sectors, reflecting the core pillars of Oman Vision 2040.",
+    "missionTitle": "Our mission",
+    "mission": "Health is more than the absence of disease, and 80% of what determines our health is shaped outside the Ministry of Health and traditional healthcare. That is why Healthy Seeb follows a “Health in All Policies” approach: we bring different sectors together to improve public health, support sustainable urban growth and build an active community partnership that ensures a healthy, fair environment for everyone in the wilayat."
+  },
+  "committees": {
+    "title": "Healthy Seeb committees",
+    "subtitle": "The pillars of community and development work towards the goals of a healthy city",
+    "explore": "Explore the committee's programmes →"
+  },
+  "events": {
+    "title": "Latest events",
+    "subtitle": "Field activities and ongoing initiatives that promote community health in every village of the wilayat",
+    "viewAll": "View all events",
+    "empty": "No events have been published yet."
+  },
+  "map": {
+    "title": "Map of facilities and services in Wilayat Seeb",
+    "subtitle": "Your guide to the public services, health facilities and schools across the wilayat",
+    "label": "Interactive facilities map",
+    "searchPlaceholder": "Search for a facility or area…",
+    "searchLabel": "Search facilities",
+    "clear": "Clear search",
+    "openInGoogle": "Open in Google Maps",
+    "noResults": "No matching places",
+    "filtersLabel": "Filter facilities",
+    "filters": {
+      "all": "All",
+      "health": "Health facilities",
+      "schools": "Schools",
+      "police": "Police stations",
+      "parks": "Parks"
+    },
+    "layersLabel": "Map type",
+    "mapView": "Map",
+    "satellite": "Satellite",
+    "myLocation": "My location",
+    "locationError": "Your location could not be found.",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "close": "Close",
+    "open24h": "Open 24 hours",
+    "hours": "Opening hours: {hours}",
+    "directions": "Directions",
+    "call": "Call",
+    "loading": "Loading map…"
+  }
+}

@@ -72,6 +72,8 @@ export interface Config {
     committees: Committee;
     'committee-memberships': CommitteeMembership;
     posts: Post;
+    requests: Request;
+    places: Place;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -84,6 +86,8 @@ export interface Config {
     committees: CommitteesSelect<false> | CommitteesSelect<true>;
     'committee-memberships': CommitteeMembershipsSelect<false> | CommitteeMembershipsSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
+    requests: RequestsSelect<false> | RequestsSelect<true>;
+    places: PlacesSelect<false> | PlacesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -171,6 +175,24 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    card?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -179,11 +201,48 @@ export interface Media {
 export interface Committee {
   id: number;
   name: string;
+  /**
+   * Lowercase English, used in the website address, e.g. "health" → /ar/committees/health
+   */
   code: string;
+  /**
+   * Shown under the committee name on its public page.
+   */
   description?: string | null;
   isActive?: boolean | null;
+  shortDescription?: string | null;
+  icon?: ('vital_signs' | 'school' | 'groups' | 'eco' | 'campaign' | 'trending_up' | 'warning') | null;
+  sortOrder?: number | null;
+  /**
+   * Used by the "Contact the committee" button on the public page.
+   */
+  email?: string | null;
+  chairName?: string | null;
+  chairEmail?: string | null;
+  chairTitle?: string | null;
+  rapporteurName?: string | null;
+  rapporteurTitle?: string | null;
+  members?:
+    | {
+        name: string;
+        title?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  responsibilities?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Optional. E.g. "Do you have a suggestion for a cleaner environment in Seeb?"
+   */
+  suggestionsPrompt?: string | null;
+  suggestionsText?: string | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -224,6 +283,28 @@ export interface Post {
     };
     [k: string]: unknown;
   };
+  /**
+   * Event date, or publication date for announcements and reports.
+   */
+  eventDate?: string | null;
+  location?: string | null;
+  coverImage?: (number | null) | Media;
+  /**
+   * Up to 6 extra photos (shown for events).
+   */
+  gallery?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  attachment?: (number | null) | Media;
+  links?: {
+    instagram?: string | null;
+    youtube?: string | null;
+    x?: string | null;
+    press?: string | null;
+  };
   type: 'announcement' | 'news' | 'activity' | 'report' | 'general';
   committee: number | Committee;
   author: number | User;
@@ -232,6 +313,95 @@ export interface Post {
   reviewedBy?: (number | null) | User;
   reviewedAt?: string | null;
   rejectionReason?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "requests".
+ */
+export interface Request {
+  id: number;
+  kind: 'contribution' | 'message';
+  type: 'volunteering' | 'sponsorship' | 'partnership' | 'donation' | 'suggestion' | 'complaint';
+  submitterType: 'individual' | 'organization' | 'visitor';
+  name?: string | null;
+  email?: string | null;
+  phone?: string | null;
+  message: string;
+  /**
+   * The committee chosen by the visitor, or the one it is referred to.
+   */
+  committee?: (number | null) | Committee;
+  reviewStatus: 'new' | 'referred' | 'accepted' | 'rejected';
+  followUpStatus?: ('new' | 'contacted' | 'in-progress' | 'completed') | null;
+  followUpNotes?:
+    | {
+        note: string;
+        author?: (number | null) | User;
+        date?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Shown to the committee with the referred request.
+   */
+  referralNote?: string | null;
+  adminNotes?: string | null;
+  referredAt?: string | null;
+  referredBy?: (number | null) | User;
+  agreedToTerms?: boolean | null;
+  sourcePage?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "places".
+ */
+export interface Place {
+  id: number;
+  name: string;
+  category:
+    | 'hospital'
+    | 'health-center'
+    | 'pharmacy'
+    | 'school'
+    | 'university'
+    | 'kindergarten'
+    | 'police'
+    | 'civil-defense'
+    | 'park'
+    | 'beach'
+    | 'municipality'
+    | 'mall'
+    | 'bank'
+    | 'market'
+    | 'broadcaster'
+    | 'media-office'
+    | 'printing-press'
+    | 'community-center'
+    | 'charity'
+    | 'club';
+  /**
+   * Optional, e.g. "Government health facility".
+   */
+  label?: string | null;
+  address?: string | null;
+  latitude: number;
+  longitude: number;
+  phone?: string | null;
+  hours?: string | null;
+  open24h?: boolean | null;
+  services?: string | null;
+  photo?: (number | null) | Media;
+  /**
+   * Optional. Used for the "Open in Google Maps" link.
+   */
+  googleMapsUrl?: string | null;
+  committees?: (number | Committee)[] | null;
+  showOnHomeMap?: boolean | null;
+  isActive?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -278,6 +448,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'posts';
         value: number | Post;
+      } | null)
+    | ({
+        relationTo: 'requests';
+        value: number | Request;
+      } | null)
+    | ({
+        relationTo: 'places';
+        value: number | Place;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -365,6 +543,30 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+  sizes?:
+    | T
+    | {
+        thumbnail?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        card?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -375,8 +577,33 @@ export interface CommitteesSelect<T extends boolean = true> {
   code?: T;
   description?: T;
   isActive?: T;
+  shortDescription?: T;
+  icon?: T;
+  sortOrder?: T;
+  email?: T;
+  chairName?: T;
+  chairEmail?: T;
+  chairTitle?: T;
+  rapporteurName?: T;
+  rapporteurTitle?: T;
+  members?:
+    | T
+    | {
+        name?: T;
+        title?: T;
+        id?: T;
+      };
+  responsibilities?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  suggestionsPrompt?: T;
+  suggestionsText?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -401,6 +628,24 @@ export interface PostsSelect<T extends boolean = true> {
   slug?: T;
   summary?: T;
   content?: T;
+  eventDate?: T;
+  location?: T;
+  coverImage?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  attachment?: T;
+  links?:
+    | T
+    | {
+        instagram?: T;
+        youtube?: T;
+        x?: T;
+        press?: T;
+      };
   type?: T;
   committee?: T;
   author?: T;
@@ -409,6 +654,61 @@ export interface PostsSelect<T extends boolean = true> {
   reviewedBy?: T;
   reviewedAt?: T;
   rejectionReason?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "requests_select".
+ */
+export interface RequestsSelect<T extends boolean = true> {
+  kind?: T;
+  type?: T;
+  submitterType?: T;
+  name?: T;
+  email?: T;
+  phone?: T;
+  message?: T;
+  committee?: T;
+  reviewStatus?: T;
+  followUpStatus?: T;
+  followUpNotes?:
+    | T
+    | {
+        note?: T;
+        author?: T;
+        date?: T;
+        id?: T;
+      };
+  referralNote?: T;
+  adminNotes?: T;
+  referredAt?: T;
+  referredBy?: T;
+  agreedToTerms?: T;
+  sourcePage?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "places_select".
+ */
+export interface PlacesSelect<T extends boolean = true> {
+  name?: T;
+  category?: T;
+  label?: T;
+  address?: T;
+  latitude?: T;
+  longitude?: T;
+  phone?: T;
+  hours?: T;
+  open24h?: T;
+  services?: T;
+  photo?: T;
+  googleMapsUrl?: T;
+  committees?: T;
+  showOnHomeMap?: T;
+  isActive?: T;
   updatedAt?: T;
   createdAt?: T;
 }
