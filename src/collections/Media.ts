@@ -12,5 +12,13 @@ export const Media: CollectionConfig = {
       required: true,
     },
   ],
-  upload: true,
+  upload: {
+    // Photos for posts and map places, and PDF attachments.
+    mimeTypes: ['image/jpeg', 'image/png', 'image/webp', 'application/pdf'],
+    // Smaller copies so cards and galleries load fast.
+    imageSizes: [
+      { name: 'thumbnail', width: 400, height: 300, position: 'centre' },
+      { name: 'card', width: 800, height: 450, position: 'centre' },
+    ],
+  },
 }

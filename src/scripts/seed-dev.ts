@@ -1,103 +1,27 @@
 /**
- * Fills a LOCAL development database with test accounts, the 7 committees and sample posts,
- * matching the UI/UX prototype. Never run this against production.
+ * Fills a LOCAL development database with the content of the UI/UX prototypes:
+ * test accounts, the 7 committees (members, responsibilities), their posts,
+ * map places and sample requests. Never run this against production.
  *
  *   npm run seed:dev
  *
  * Test accounts (same as the prototype):
  *   Admin: admin@seebhealthy.om / Admin@2026
  *   Staff: test@seebhealthy.om  / Seeb@2026  (chair of the Health Committee)
+ *
+ * Photos and PDFs are generated placeholders (the prototype's photos are not part of the project).
  */
 import config from '@payload-config'
 import { getPayload } from 'payload'
+import sharp from 'sharp'
 
-import type { Post } from '@/payload-types'
+import type { Committee, Media, Post, User } from '@/payload-types'
+
+import seed from './seed-data.json'
 
 if (process.env.NODE_ENV === 'production') {
   throw new Error('seed-dev must not run in production.')
 }
-
-const committees = [
-  { code: 'health', name: 'اللجنة الصحية' },
-  { code: 'education', name: 'لجنة التعليم' },
-  { code: 'social', name: 'اللجنة الاجتماعية' },
-  { code: 'environment', name: 'لجنة البيئة والسلامة المهنية' },
-  { code: 'media', name: 'اللجنة الإعلامية' },
-  { code: 'economy', name: 'اللجنة الاقتصادية' },
-  { code: 'emergency', name: 'لجنة الطوارئ والأزمات' },
-]
-
-const posts: Array<{ title: string; type: Post['type']; status: Post['status']; summary: string }> =
-  [
-    {
-      title: 'الملتقى التوعوي لصحة الأم والطفل والتغذية المدرسية',
-      type: 'activity',
-      status: 'submitted',
-      summary:
-        'جلسات حوارية تثقيفية تستهدف أولياء الأمور والكوادر التعليمية بالتعاون مع مدارس ولاية السيب.',
-    },
-    {
-      title: 'حملة الكشف المبكر عن الأمراض غير المعدية بممشى السيب',
-      type: 'activity',
-      status: 'approved',
-      summary:
-        'حملة مجتمعية ميدانية للفحوصات الطبية المبكرة وقياس مؤشرات السكري وضغط الدم لمرتادي ممشى السيب.',
-    },
-    {
-      title: 'بدء التسجيل في برنامج المتطوع الصحي المجتمعي لقرى ومناطق ولاية السيب',
-      type: 'announcement',
-      status: 'approved',
-      summary: 'فتح باب التسجيل لبرنامج المتطوع الصحي المجتمعي لتدريب وتأهيل أبناء وبنات الولاية.',
-    },
-    {
-      title: 'تحديث جدول مواعيد العيادات التخصصية المتنقلة لكبار السن في قرى الولاية',
-      type: 'announcement',
-      status: 'approved',
-      summary: 'جدول الزيارات الدورية للعيادات التخصصية المتنقلة لكبار السن وذوي الإعاقة.',
-    },
-    {
-      title: 'دعوة للمشاركة في استبانة رصد الاحتياجات الصحية لذوي الإعاقة بولاية السيب',
-      type: 'announcement',
-      status: 'draft',
-      summary: 'استبانة إلكترونية لتحديد الأولويات الصحية والتأهيلية الموجهة لذوي الإعاقة.',
-    },
-    {
-      title: 'التقرير السنوي لمؤشرات الأمراض المزمنة ونمط الحياة بولاية السيب ٢٠٢٥-٢٠٢٦',
-      type: 'report',
-      status: 'approved',
-      summary:
-        'مؤشرات الأمراض المزمنة ونمط الحياة والنتائج الإحصائية للفحوصات المبكرة والتوصيات المعتمدة.',
-    },
-    {
-      title: 'تقرير الربع الأول ٢٠٢٦ – مؤشرات الأداء الصحي',
-      type: 'report',
-      status: 'rejected',
-      summary: '',
-    },
-  ]
-
-const richText = (text: string) => ({
-  root: {
-    type: 'root',
-    version: 1,
-    direction: 'rtl' as const,
-    format: '' as const,
-    indent: 0,
-    children: [
-      {
-        type: 'paragraph',
-        version: 1,
-        direction: 'rtl' as const,
-        format: '' as const,
-        indent: 0,
-        textFormat: 0,
-        children: [
-          { type: 'text', version: 1, text, format: 0, detail: 0, mode: 'normal', style: '' },
-        ],
-      },
-    ],
-  },
-})
 
 const payload = await getPayload({ config })
 
@@ -107,13 +31,111 @@ const existing = await payload.find({
   limit: 1,
   overrideAccess: true,
 })
-
 if (existing.docs.length > 0) {
-  payload.logger.info('Seed data already exists (admin@seebhealthy.om found). Nothing to do.')
+  payload.logger.info(
+    'Seed data already exists (admin@seebhealthy.om found). To start again, empty the database first.',
+  )
   process.exit(0)
 }
 
-const admin = await payload.create({
+// ---------- helpers ----------
+
+const richText = (text: string) => ({
+  root: {
+    type: 'root',
+    version: 1,
+    direction: 'rtl' as const,
+    format: '' as const,
+    indent: 0,
+    children: text
+      .split('\n')
+      .filter(Boolean)
+      .map((paragraph) => ({
+        type: 'paragraph',
+        version: 1,
+        direction: 'rtl' as const,
+        format: '' as const,
+        indent: 0,
+        textFormat: 0,
+        children: [
+          {
+            type: 'text',
+            version: 1,
+            text: paragraph,
+            format: 0,
+            detail: 0,
+            mode: 'normal',
+            style: '',
+          },
+        ],
+      })),
+  },
+})
+
+const PALETTE = [
+  ['#014260', '#116e68'],
+  ['#116e68', '#85d4cd'],
+  ['#b79f7d', '#014260'],
+  ['#1d5c7a', '#b79f7d'],
+  ['#0e4a46', '#e2efe7'],
+]
+let imageCount = 0
+
+/** A soft brand-coloured placeholder photo. */
+async function placeholderImage(alt: string): Promise<Media> {
+  const [from, to] = PALETTE[imageCount++ % PALETTE.length]
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675">
+    <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="${from}"/><stop offset="1" stop-color="${to}"/></linearGradient></defs>
+    <rect width="1200" height="675" fill="url(#g)"/>
+    <path d="M0,520 C200,440 420,600 640,520 C860,440 1040,560 1200,500 L1200,675 L0,675 Z" fill="#ffffff" fill-opacity="0.18"/>
+    <path d="M0,580 C260,520 480,650 760,580 C960,530 1100,610 1200,590 L1200,675 L0,675 Z" fill="#ffffff" fill-opacity="0.15"/>
+  </svg>`
+  const data = await sharp(Buffer.from(svg)).jpeg({ quality: 80 }).toBuffer()
+  return payload.create({
+    collection: 'media',
+    data: { alt },
+    file: {
+      data,
+      mimetype: 'image/jpeg',
+      name: `placeholder-${imageCount}.jpg`,
+      size: data.length,
+    },
+    overrideAccess: true,
+  })
+}
+
+/** A one-page PDF placeholder. */
+async function placeholderPdf(name: string): Promise<Media> {
+  // A minimal valid PDF, with the cross-reference table Payload checks for.
+  const objects = [
+    '<</Type/Catalog/Pages 2 0 R>>',
+    '<</Type/Pages/Kids[3 0 R]/Count 1>>',
+    '<</Type/Page/Parent 2 0 R/MediaBox[0 0 595 842]>>',
+  ]
+  let body = '%PDF-1.4\n'
+  const offsets = objects.map((object, index) => {
+    const offset = body.length
+    body += `${index + 1} 0 obj${object}endobj\n`
+    return offset
+  })
+  const xref = body.length
+  body +=
+    `xref\n0 ${objects.length + 1}\n0000000000 65535 f \n` +
+    offsets.map((offset) => `${String(offset).padStart(10, '0')} 00000 n \n`).join('') +
+    `trailer<</Size ${objects.length + 1}/Root 1 0 R>>\nstartxref\n${xref}\n%%EOF\n`
+  const pdf = Buffer.from(body, 'latin1')
+  return payload.create({
+    collection: 'media',
+    data: { alt: name },
+    file: { data: pdf, mimetype: 'application/pdf', name, size: pdf.length },
+    overrideAccess: true,
+  })
+}
+
+// ---------- users ----------
+
+const admin: User = await payload.create({
   collection: 'users',
   data: {
     email: 'admin@seebhealthy.om',
@@ -125,7 +147,7 @@ const admin = await payload.create({
   overrideAccess: true,
 })
 
-const staff = await payload.create({
+const staff: User = await payload.create({
   collection: 'users',
   data: {
     email: 'test@seebhealthy.om',
@@ -137,44 +159,183 @@ const staff = await payload.create({
   overrideAccess: true,
 })
 
-const created = []
-for (const committee of committees) {
-  created.push(
-    await payload.create({
-      collection: 'committees',
-      data: { ...committee, isActive: true },
-      overrideAccess: true,
-    }),
-  )
-}
-const health = created[0]
+// ---------- committees and their posts ----------
 
+const committees: Record<string, Committee> = {}
+let postCount = 0
+
+for (const item of seed.committees) {
+  const committee = await payload.create({
+    collection: 'committees',
+    data: {
+      name: item.name,
+      code: item.code,
+      description: item.description,
+      shortDescription: item.shortDescription,
+      icon: item.icon as Committee['icon'],
+      sortOrder: item.sortOrder,
+      isActive: true,
+      chairName: item.chairName,
+      chairTitle: item.chairTitle,
+      chairEmail: item.chairEmail,
+      rapporteurName: item.rapporteurName,
+      rapporteurTitle: item.rapporteurTitle,
+      members: item.members,
+      responsibilities: item.responsibilities.map((text) => ({ text })),
+      suggestionsPrompt: item.suggestionsPrompt,
+      suggestionsText: item.suggestionsText,
+      _status: 'published',
+    },
+    overrideAccess: true,
+  })
+  committees[item.code] = committee
+
+  for (const post of item.posts) {
+    const cover = post.hasImage ? await placeholderImage(post.title) : null
+    const gallery = []
+    for (let i = 0; i < Math.min(post.galleryCount, 3); i++) {
+      gallery.push({ image: (await placeholderImage(`${post.title} ${i + 1}`)).id })
+    }
+    const attachment = post.pdfName ? await placeholderPdf(post.pdfName) : null
+
+    await payload.create({
+      collection: 'posts',
+      data: {
+        title: post.title,
+        slug: `${item.code}-${++postCount}`,
+        summary: post.summary ? post.summary.slice(0, 500) : undefined,
+        content: richText(post.summary || post.title),
+        type: post.type as Post['type'],
+        status: 'approved',
+        committee: committee.id,
+        author: item.code === 'health' ? staff.id : admin.id,
+        eventDate: post.eventDate ?? undefined,
+        location: post.location ?? undefined,
+        coverImage: cover?.id,
+        gallery,
+        attachment: attachment?.id,
+      },
+      // The Posts hooks need a signed-in user; the admin "approves" the seeded posts.
+      user: admin,
+      overrideAccess: true,
+    })
+  }
+}
+
+// Staff member: chair of the Health Committee.
 await payload.create({
   collection: 'committee-memberships',
-  data: { user: staff.id, committee: health.id, role: 'chair', isActive: true },
+  data: { user: staff.id, committee: committees.health.id, role: 'chair', isActive: true },
   overrideAccess: true,
 })
 
-// Created as the admin (the Posts hooks need a signed-in user), authored by the staff member.
-for (const [index, post] of posts.entries()) {
+// A draft and a rejected post, so the staff portal shows every status.
+for (const [status, title] of [
+  ['draft', 'دعوة للمشاركة في استبانة رصد الاحتياجات الصحية لذوي الإعاقة بولاية السيب'],
+  ['rejected', 'تقرير الربع الأول ٢٠٢٦ – مؤشرات الأداء الصحي'],
+] as const) {
   await payload.create({
     collection: 'posts',
     data: {
-      title: post.title,
-      slug: `health-${index + 1}`,
-      summary: post.summary || undefined,
-      content: richText(post.summary || post.title),
-      type: post.type,
-      status: post.status,
-      committee: health.id,
+      title,
+      slug: `health-${++postCount}`,
+      content: richText(title),
+      type: status === 'draft' ? 'announcement' : 'report',
+      status,
+      committee: committees.health.id,
       author: staff.id,
-      rejectionReason:
-        post.status === 'rejected' ? 'يرجى إرفاق ملف التقرير قبل الإرسال.' : undefined,
+      rejectionReason: status === 'rejected' ? 'يرجى إرفاق ملف التقرير قبل الإرسال.' : undefined,
     },
     user: admin,
     overrideAccess: true,
   })
 }
 
-payload.logger.info('Seed complete: 2 users, 7 committees, 1 membership, 7 posts.')
+// ---------- map places ----------
+
+for (const place of seed.places) {
+  await payload.create({
+    collection: 'places',
+    data: {
+      name: place.name,
+      category: place.category as never,
+      address: place.address,
+      latitude: place.latitude,
+      longitude: place.longitude,
+      googleMapsUrl: place.googleMapsUrl,
+      committees: place.committees.map((code) => committees[code].id),
+      showOnHomeMap: place.showOnHomeMap,
+      isActive: true,
+    },
+    overrideAccess: true,
+  })
+}
+
+// ---------- sample requests (from the referrals / inbox prototypes) ----------
+
+const requests = [
+  {
+    kind: 'contribution',
+    type: 'partnership',
+    submitterType: 'organization',
+    name: 'عيادة الأمل الطبية',
+    message: 'شراكة لتنظيم فحوصات مجانية للسكري وضغط الدم',
+    reviewStatus: 'referred',
+    followUpStatus: 'new',
+  },
+  {
+    kind: 'contribution',
+    type: 'volunteering',
+    submitterType: 'individual',
+    name: 'ريم بنت علي البوسعيدية',
+    message: 'التطوع في حملات التوعية الصحية',
+    reviewStatus: 'referred',
+    followUpStatus: 'in-progress',
+  },
+  {
+    kind: 'message',
+    type: 'suggestion',
+    submitterType: 'visitor',
+    name: 'سعاد بنت ناصر الحبسية',
+    message: 'تخصيص مسار آمن للمشي حول مركز السيب الصحي مع لوحات توعوية.',
+    reviewStatus: 'referred',
+    followUpStatus: 'contacted',
+  },
+  {
+    kind: 'message',
+    type: 'complaint',
+    submitterType: 'visitor',
+    name: '',
+    message: 'طول فترة الانتظار في مركز السيب الصحي خلال الفترة المسائية.',
+    reviewStatus: 'referred',
+    followUpStatus: 'completed',
+  },
+  {
+    kind: 'message',
+    type: 'suggestion',
+    submitterType: 'visitor',
+    name: 'خالد بن سعيد الهنائي',
+    message: 'إضافة حاويات لإعادة التدوير في الحدائق العامة.',
+    reviewStatus: 'new',
+  },
+] as const
+
+for (const request of requests) {
+  await payload.create({
+    collection: 'requests',
+    data: {
+      ...request,
+      email: 'visitor@example.com',
+      committee: committees.health.id,
+      agreedToTerms: true,
+      sourcePage: '/ar/committees/health',
+    },
+    user: admin,
+    overrideAccess: true,
+  })
+}
+
+payload.logger.info(
+  `Seed complete: 2 users, ${seed.committees.length} committees, ${postCount} posts, ${seed.places.length} places, ${requests.length} requests.`,
+)
 process.exit(0)
