@@ -481,7 +481,7 @@ export function PostForm({ postId, initial }: { postId?: number; initial: PostFo
                 dir="auto"
                 aria-invalid={isInvalid('content') || undefined}
                 aria-describedby={isInvalid('content') ? 'post-content-error' : undefined}
-                className="w-full resize-y border-0 bg-surface-container-lowest p-4 text-body-md text-on-surface focus:ring-0 focus:outline-none"
+                className="w-full resize-y bg-surface-container-lowest p-4 text-body-md text-on-surface focus:ring-0 focus:outline-none"
               />
             </div>
             {isInvalid('content') ? (

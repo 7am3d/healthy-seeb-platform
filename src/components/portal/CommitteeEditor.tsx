@@ -15,7 +15,7 @@ import {
 import { useToast } from './Toast'
 
 const fieldClass =
-  'w-full rounded-sm border-0 bg-surface-container-low px-space-md py-3 text-body-md text-on-surface transition-colors focus:bg-surface-container-lowest focus:ring-1 focus:ring-secondary focus:outline-none disabled:opacity-70'
+  'w-full rounded-sm bg-surface-container-low px-space-md py-3 text-body-md text-on-surface transition-colors focus:bg-surface-container-lowest focus:ring-1 focus:ring-secondary focus:outline-none disabled:opacity-70'
 const rowInputClass =
   'w-full rounded-sm border border-outline-variant/60 bg-surface-container-lowest px-space-md py-2.5 text-body-md text-on-surface focus:border-outline-variant/60 focus:ring-1 focus:ring-secondary focus:outline-none disabled:opacity-70'
 const deleteClass =
