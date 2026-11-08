@@ -343,6 +343,10 @@ export interface Request {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Shown to the committee with the referred request.
+   */
+  referralNote?: string | null;
   adminNotes?: string | null;
   referredAt?: string | null;
   referredBy?: (number | null) | User;
@@ -676,6 +680,7 @@ export interface RequestsSelect<T extends boolean = true> {
         date?: T;
         id?: T;
       };
+  referralNote?: T;
   adminNotes?: T;
   referredAt?: T;
   referredBy?: T;

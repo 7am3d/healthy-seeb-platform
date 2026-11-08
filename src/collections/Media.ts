@@ -1,9 +1,16 @@
 import type { CollectionConfig } from 'payload'
 
+import { isAdministrator } from '../access/roles'
+
 export const Media: CollectionConfig = {
   slug: 'media',
   access: {
     read: () => true,
+    // Any signed-in user can upload (staff add photos and PDFs to their posts);
+    // only administrators can change or delete files.
+    create: ({ req }) => Boolean(req.user),
+    update: ({ req }) => isAdministrator(req.user),
+    delete: ({ req }) => isAdministrator(req.user),
   },
   fields: [
     {

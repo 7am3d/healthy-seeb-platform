@@ -274,59 +274,81 @@ for (const place of seed.places) {
 
 // ---------- sample requests (from the referrals / inbox prototypes) ----------
 
+const daysAgo = (days: number) => new Date(Date.now() - days * 86_400_000).toISOString()
+
 const requests = [
   {
     kind: 'contribution',
     type: 'partnership',
     submitterType: 'organization',
     name: 'عيادة الأمل الطبية',
-    message: 'شراكة لتنظيم فحوصات مجانية للسكري وضغط الدم',
+    email: 'info@example.com',
+    message:
+      'شراكة لتنظيم فحوصات مجانية للسكري وضغط الدم\nتقترح العيادة توفير فريق طبي وأجهزة فحص لإقامة يوم صحي مفتوح بالتعاون مع اللجنة الصحية، دون أي تكلفة على المبادرة.',
     reviewStatus: 'referred',
     followUpStatus: 'new',
+    referralNote: 'تمت الموافقة من الإدارة، يرجى التنسيق مع العيادة لتحديد الموعد والمكان.',
+    referredAt: daysAgo(2),
+    notes: [],
   },
   {
     kind: 'contribution',
     type: 'volunteering',
     submitterType: 'individual',
     name: 'ريم بنت علي البوسعيدية',
-    message: 'التطوع في حملات التوعية الصحية',
+    email: 'reem.b@example.com',
+    message:
+      'التطوع في حملات التوعية الصحية\nممرضة متقاعدة أرغب في المشاركة في حملات التوعية بالأمراض المزمنة وقياس ضغط الدم في الفعاليات المجتمعية.',
     reviewStatus: 'referred',
     followUpStatus: 'in-progress',
+    referredAt: daysAgo(4),
+    notes: [{ note: 'تم التواصل مع المتطوعة وإضافتها لفريق الملتقى التوعوي.', date: daysAgo(3) }],
   },
   {
     kind: 'message',
     type: 'suggestion',
     submitterType: 'visitor',
     name: 'سعاد بنت ناصر الحبسية',
+    email: 'suad.h@example.com',
     message: 'تخصيص مسار آمن للمشي حول مركز السيب الصحي مع لوحات توعوية.',
     reviewStatus: 'referred',
     followUpStatus: 'contacted',
+    referredAt: daysAgo(6),
+    notes: [{ note: 'تم الرد على صاحبة المقترح ودراسته مع البلدية.', date: daysAgo(4) }],
   },
   {
     kind: 'message',
     type: 'complaint',
     submitterType: 'visitor',
     name: '',
+    email: 'visitor.seeb@example.com',
     message: 'طول فترة الانتظار في مركز السيب الصحي خلال الفترة المسائية.',
     reviewStatus: 'referred',
     followUpStatus: 'completed',
+    referredAt: daysAgo(14),
+    notes: [
+      { note: 'رُفعت الشكوى لإدارة المركز.', date: daysAgo(12) },
+      { note: 'أُضيف طبيب في الفترة المسائية، وتم إبلاغ صاحب الشكوى.', date: daysAgo(8) },
+    ],
   },
   {
     kind: 'message',
     type: 'suggestion',
     submitterType: 'visitor',
     name: 'خالد بن سعيد الهنائي',
+    email: 'khalid.h@example.com',
     message: 'إضافة حاويات لإعادة التدوير في الحدائق العامة.',
     reviewStatus: 'new',
+    notes: [],
   },
 ] as const
 
-for (const request of requests) {
+for (const { notes, ...request } of requests) {
   await payload.create({
     collection: 'requests',
     data: {
       ...request,
-      email: 'visitor@example.com',
+      followUpNotes: notes.map((note) => ({ ...note, author: staff.id })),
       committee: committees.health.id,
       agreedToTerms: true,
       sourcePage: '/ar/committees/health',

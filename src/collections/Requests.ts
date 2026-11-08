@@ -62,10 +62,22 @@ export const Requests: CollectionConfig = {
 
   hooks: {
     beforeChange: [
-      ({ data, originalDoc, req }) => {
+      ({ data, operation, originalDoc, req }) => {
+        // Committee members can add follow-up notes but not edit or delete earlier ones.
+        if (req.user && !isAdministrator(req.user) && Array.isArray(data.followUpNotes)) {
+          const previous: { id?: string | null }[] = originalDoc?.followUpNotes ?? []
+          const previousIDs = new Set(previous.map((note) => note.id))
+          const added = data.followUpNotes.filter(
+            (note: { id?: string | null }) => !note.id || !previousIDs.has(note.id),
+          )
+          data.followUpNotes = [...previous, ...added]
+        }
+
         // Record who referred the request and when.
         if (data.reviewStatus === 'referred' && originalDoc?.reviewStatus !== 'referred') {
-          data.referredAt = new Date().toISOString()
+          // (A request created as already referred, e.g. by the seed script, may set its own date.)
+          data.referredAt =
+            operation === 'create' && data.referredAt ? data.referredAt : new Date().toISOString()
           if (req.user) data.referredBy = req.user.id
           data.followUpStatus = data.followUpStatus ?? 'new'
         }
@@ -187,6 +199,13 @@ export const Requests: CollectionConfig = {
           },
         },
       ],
+    },
+    {
+      name: 'referralNote',
+      type: 'textarea',
+      label: 'Note to the committee',
+      admin: { description: 'Shown to the committee with the referred request.' },
+      access: { update: adminOnlyField },
     },
     {
       name: 'adminNotes',
