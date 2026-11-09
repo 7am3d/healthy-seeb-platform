@@ -54,7 +54,7 @@ export const Committees: CollectionConfig = {
       if (isAdministrator(req.user)) return true
       if (!(req.user as { isActive?: boolean }).isActive) return false
 
-      const committeeIDs = await activeCommitteeIDs(req, ['chair', 'rapporteur'])
+      const committeeIDs = await activeCommitteeIDs(req)
       if (committeeIDs.length === 0) return false
 
       return { id: { in: committeeIDs } }
@@ -65,7 +65,7 @@ export const Committees: CollectionConfig = {
     readVersions: async ({ req }): Promise<boolean | Where> => {
       if (!req.user) return false
       if (isAdministrator(req.user)) return true
-      const committeeIDs = await activeCommitteeIDs(req, ['chair', 'rapporteur'])
+      const committeeIDs = await activeCommitteeIDs(req)
       return committeeIDs.length > 0 ? { parent: { in: committeeIDs } } : false
     },
   },

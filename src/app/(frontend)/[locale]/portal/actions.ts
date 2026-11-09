@@ -5,10 +5,11 @@ import { login, logout } from '@payloadcms/next/auth'
 import { cookies } from 'next/headers'
 import { hasLocale } from 'next-intl'
 
-import { redirect } from '@/i18n/navigation'
+import { redirect as localeRedirect } from '@/i18n/navigation'
+import { redirect as nextRedirect } from 'next/navigation'
 import { routing } from '@/i18n/routing'
 import { buildPortalSession, getPayloadClient, portalHomeFor } from '@/lib/portal/session'
-import { PORTAL_LOGIN } from '@/lib/portal/routes'
+import { PORTAL_ADMIN_HOME, PORTAL_LOGIN } from '@/lib/portal/routes'
 
 export type LoginError = 'required' | 'invalid' | 'inactive' | 'noCommittee' | 'locked' | 'generic'
 export type LoginState = { error?: LoginError; email?: string } | undefined
@@ -68,11 +69,15 @@ export async function loginAction(_prev: LoginState, formData: FormData): Promis
     return { error: session && !session.user.isActive ? 'inactive' : 'noCommittee', email }
   }
 
-  return redirect({ href: home, locale })
+  if (session.isAdmin) {
+  return nextRedirect(PORTAL_ADMIN_HOME)
+}
+
+return localeRedirect({ href: home, locale })
 }
 
 export async function logoutAction(formData: FormData) {
   const locale = toLocale(formData.get('locale'))
   await logout({ config })
-  return redirect({ href: PORTAL_LOGIN, locale })
+  return localeRedirect({ href: PORTAL_LOGIN, locale })
 }

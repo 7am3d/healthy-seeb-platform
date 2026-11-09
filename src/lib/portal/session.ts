@@ -3,7 +3,8 @@ import { headers as getHeaders } from 'next/headers'
 import { getPayload } from 'payload'
 import { cache } from 'react'
 
-import { redirect } from '@/i18n/navigation'
+import { redirect as localeRedirect } from '@/i18n/navigation'
+import { redirect as nextRedirect } from 'next/navigation'
 import type { Locale } from '@/i18n/routing'
 import type { Committee, CommitteeMembership, User } from '@/payload-types'
 
@@ -75,16 +76,23 @@ export async function requireStaffSession(locale: Locale): Promise<StaffSession>
   const session = await getPortalSession()
 
   if (!session) {
-    return redirect({ href: PORTAL_LOGIN, locale })
+    return localeRedirect({ href: PORTAL_LOGIN, locale })
   }
 
   if (!session.user.isActive) {
-    return redirect({ href: { pathname: PORTAL_LOGIN, query: { error: 'inactive' } }, locale })
+    return localeRedirect({
+      href: { pathname: PORTAL_LOGIN, query: { error: 'inactive' } },
+      locale,
+    })
   }
 
   if (!session.membership) {
-    if (session.isAdmin) return redirect({ href: PORTAL_ADMIN_HOME, locale })
-    return redirect({ href: { pathname: PORTAL_LOGIN, query: { error: 'noCommittee' } }, locale })
+    if (session.isAdmin) return nextRedirect(PORTAL_ADMIN_HOME)
+
+    return localeRedirect({
+      href: { pathname: PORTAL_LOGIN, query: { error: 'noCommittee' } },
+      locale,
+    })
   }
 
   return session as StaffSession
@@ -97,6 +105,5 @@ export async function getStaffSession(): Promise<StaffSession | null> {
   return session as StaffSession
 }
 
-/** Chairs and rapporteurs can edit their committee's public page. */
-export const canEditCommitteePage = (session: StaffSession) =>
-  session.membership.role === 'chair' || session.membership.role === 'rapporteur'
+/** The assigned staff member can edit their committee's public page. */
+export const canEditCommitteePage = (_session: StaffSession) => true
