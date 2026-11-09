@@ -1,10 +1,8 @@
 
 import type { CollectionConfig, Where } from 'payload'
 import { APIError } from 'payload'
+import { activeCommitteeIDs, isAdministrator } from '../access/roles'
 
-const isAdministrator = (user: any) =>
-  user?.globalRole === 'super-admin' ||
-  user?.globalRole === 'administrator'
 
 const getID = (value: any): string | number | undefined => {
   if (typeof value === 'string' || typeof value === 'number') return value
@@ -60,7 +58,7 @@ export const Posts: CollectionConfig = {
       return Boolean((req.user as any).isActive)
     },
 
-    read: ({ req }): boolean | Where => {
+    read: async ({ req }): Promise<boolean | Where> => {
       if (!req.user) {
         return { status: { equals: 'approved' } }
       }
@@ -69,11 +67,15 @@ export const Posts: CollectionConfig = {
 
       if (!(req.user as any).isActive) return false
 
-      const where: Where = {
-        author: { equals: req.user.id },
-      }
+      const committeeIDs = await activeCommitteeIDs(req)
 
-      return where
+      if (committeeIDs.length === 0) return false
+
+      return {
+        committee: {
+          in: committeeIDs,
+        },
+      }
     },
 
     update: ({ req }): boolean | Where => {

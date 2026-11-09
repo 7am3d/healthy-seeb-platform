@@ -1,10 +1,7 @@
 
 import type { CollectionConfig } from 'payload'
 import { APIError } from 'payload'
-
-const isAdministrator = (user: any) =>
-  user?.globalRole === 'super-admin' ||
-  user?.globalRole === 'administrator'
+import { isAdministrator } from '../access/roles'
 
 const getRelationshipID = (
   value: unknown,
@@ -51,7 +48,6 @@ export const CommitteeMemberships: CollectionConfig = {
           data?.committee ?? originalDoc?.committee,
         )
 
-        const role = data?.role ?? originalDoc?.role
         const isActive = data?.isActive ?? originalDoc?.isActive ?? true
 
         if (!userID || !committeeID) {
@@ -67,11 +63,12 @@ export const CommitteeMemberships: CollectionConfig = {
             id: userID,
             depth: 0,
             overrideAccess: true,
+            req,
           })
 
-          if (!user.isActive) {
+          if (!user.isActive || user.globalRole !== 'staff') {
             throw new APIError(
-              'Inactive users cannot have active memberships.',
+              'Only active staff accounts can have active committee memberships.',
               400,
             )
           }
@@ -81,6 +78,7 @@ export const CommitteeMemberships: CollectionConfig = {
             id: committeeID,
             depth: 0,
             overrideAccess: true,
+            req,
           })
 
           if (!committee.isActive) {
@@ -94,52 +92,30 @@ export const CommitteeMemberships: CollectionConfig = {
             collection: 'committee-memberships',
             where: {
               and: [
-                { user: { equals: userID } },
-                { committee: { equals: committeeID } },
                 { isActive: { equals: true } },
+                {
+                  or: [
+                    { user: { equals: userID } },
+                    { committee: { equals: committeeID } },
+                  ],
+                },
               ],
             },
             limit: 100,
             depth: 0,
             overrideAccess: true,
+            req,
           })
 
-          const duplicate = existingMemberships.docs.some(
+          const conflictingMembership = existingMemberships.docs.find(
             (membership) => membership.id !== originalDoc?.id,
           )
 
-          if (duplicate) {
+          if (conflictingMembership) {
             throw new APIError(
-              'This user already has an active membership in this committee.',
+              'Each staff account can belong to only one committee, and each committee can have only one active staff account.',
               400,
             )
-          }
-
-          if (role === 'chair') {
-            const existingChairs = await req.payload.find({
-              collection: 'committee-memberships',
-              where: {
-                and: [
-                  { committee: { equals: committeeID } },
-                  { role: { equals: 'chair' } },
-                  { isActive: { equals: true } },
-                ],
-              },
-              limit: 100,
-              depth: 0,
-              overrideAccess: true,
-            })
-
-            const anotherChair = existingChairs.docs.some(
-              (membership) => membership.id !== originalDoc?.id,
-            )
-
-            if (anotherChair) {
-              throw new APIError(
-                'This committee already has an active Chair.',
-                400,
-              )
-            }
           }
         }
 

@@ -21,7 +21,7 @@ export type PortalSession = {
 export const getPayloadClient = cache(() => getPayload({ config }))
 
 export const isAdministrator = (user: Pick<User, 'globalRole'> | null | undefined) =>
-  user?.globalRole === 'super-admin' || user?.globalRole === 'administrator'
+  user?.globalRole === 'super-admin'
 
 /** Builds the portal session for a user: their role and active committee membership. */
 export async function buildPortalSession(user: User): Promise<PortalSession> {
@@ -60,8 +60,8 @@ export const getPortalSession = cache(async (): Promise<PortalSession | null> =>
 /** Where a user should land after signing in, or null if they cannot use the portal. */
 export function portalHomeFor(session: PortalSession): string | null {
   if (!session.user.isActive) return null
-  if (session.membership) return PORTAL_STAFF_HOME
   if (session.isAdmin) return PORTAL_ADMIN_HOME
+  if (session.membership) return PORTAL_STAFF_HOME
   return null
 }
 

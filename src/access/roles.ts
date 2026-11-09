@@ -2,10 +2,9 @@ import type { PayloadRequest } from 'payload'
 
 type MaybeUser = { globalRole?: string | null; isActive?: boolean | null } | null | undefined
 
-/** Super-admins and administrators manage the whole portal. */
+/** Only the super-admin manages the entire platform. */
 export const isAdministrator = (user: unknown) =>
-  (user as MaybeUser)?.globalRole === 'super-admin' ||
-  (user as MaybeUser)?.globalRole === 'administrator'
+  (user as MaybeUser)?.globalRole === 'super-admin'
 
 /** The ID of a relationship value, whether it is populated or not. */
 export const getRelationshipID = (value: unknown): string | number | undefined => {

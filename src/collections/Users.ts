@@ -1,9 +1,6 @@
 
 import type { CollectionConfig } from 'payload'
-
-const isAdministrator = (user: any) =>
-  user?.globalRole === 'super-admin' ||
-  user?.globalRole === 'administrator'
+import { isAdministrator } from '../access/roles'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -20,7 +17,6 @@ export const Users: CollectionConfig = {
 
     read: ({ req }) => {
       if (!req.user) return false
-
       if (isAdministrator(req.user)) return true
 
       return {
@@ -32,7 +28,6 @@ export const Users: CollectionConfig = {
 
     update: ({ req }) => {
       if (!req.user) return false
-
       if (isAdministrator(req.user)) return true
 
       return {
@@ -42,7 +37,38 @@ export const Users: CollectionConfig = {
       }
     },
 
-    delete: ({ req }) => isAdministrator(req.user),
+    delete: async ({ req, id }) => {
+  if (!isAdministrator(req.user) || !id) return false
+
+  const target = await req.payload.findByID({
+    collection: 'users',
+    id,
+    depth: 0,
+    overrideAccess: true,
+    req,
+  })
+
+  return target.globalRole !== 'super-admin'
+},
+  },
+
+  hooks: {
+    beforeChange: [
+      ({ data, operation, originalDoc }) => {
+        if (operation === 'create') {
+          data.globalRole = 'staff'
+        } else {
+          data.globalRole = originalDoc?.globalRole ?? 'staff'
+
+          if (originalDoc?.globalRole === 'super-admin') {
+            data.isActive = true
+          }
+        }
+
+        return data
+      },
+    ],
+
   },
 
   fields: [
@@ -63,16 +89,13 @@ export const Users: CollectionConfig = {
       defaultValue: 'staff',
       required: true,
       access: {
-        update: ({ req }) => isAdministrator(req.user),
+        create: () => false,
+        update: () => false,
       },
       options: [
         {
           label: 'Super Administrator',
           value: 'super-admin',
-        },
-        {
-          label: 'Administrator',
-          value: 'administrator',
         },
         {
           label: 'Staff',
