@@ -2,7 +2,8 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
-import { redirect } from '@/i18n/navigation'
+import { redirect as localeRedirect } from '@/i18n/navigation'
+import { redirect as nextRedirect } from 'next/navigation'
 import type { Locale } from '@/i18n/routing'
 import { digits } from '@/lib/format'
 import { getPortalSession, portalHomeFor } from '@/lib/portal/session'
@@ -29,9 +30,16 @@ export default async function PortalLoginPage({ params, searchParams }: Props) {
   setRequestLocale(locale)
 
   // Already signed in with portal access: go straight to the portal.
-  const session = await getPortalSession()
-  const home = session ? portalHomeFor(session) : null
-  if (home) redirect({ href: home, locale })
+const session = await getPortalSession()
+const home = session ? portalHomeFor(session) : null
+
+if (home) {
+  if (session?.isAdmin) {
+    nextRedirect(home)
+  }
+
+  localeRedirect({ href: home, locale })
+}
 
   const { error } = await searchParams
   const initialError = KNOWN_ERRORS.find((known) => known === error)

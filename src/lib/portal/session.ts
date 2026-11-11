@@ -107,3 +107,27 @@ export async function getStaffSession(): Promise<StaffSession | null> {
 
 /** The assigned staff member can edit their committee's public page. */
 export const canEditCommitteePage = (_session: StaffSession) => true
+
+
+/** Restricts the custom admin portal to the single super-admin account. */
+export async function requireAdminSession(locale: Locale): Promise<PortalSession & { isAdmin: true }> {
+  const session = await getPortalSession()
+
+  if (!session) {
+    return localeRedirect({ href: PORTAL_LOGIN, locale })
+  }
+
+  if (!session.user.isActive) {
+    return localeRedirect({
+      href: { pathname: PORTAL_LOGIN, query: { error: 'inactive' } },
+      locale,
+    })
+  }
+
+  if (!session.isAdmin) {
+    return localeRedirect({ href: PORTAL_STAFF_HOME, locale })
+  }
+
+  return session as PortalSession & { isAdmin: true }
+}
+

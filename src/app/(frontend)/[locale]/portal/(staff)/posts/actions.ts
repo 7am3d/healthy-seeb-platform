@@ -41,7 +41,10 @@ export async function uploadPostFile(formData: FormData): Promise<UploadResult> 
     const alt = String(formData.get('alt') ?? '').trim() || file.name
     const media = await payload.create({
       collection: 'media',
-      data: { alt: alt.slice(0, 180) },
+      data: {
+        alt: alt.slice(0, 180),
+        uploadedBy: session.user.id,
+      },
       file: {
         data: Buffer.from(await file.arrayBuffer()),
         mimetype: file.type,

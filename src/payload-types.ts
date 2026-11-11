@@ -135,7 +135,7 @@ export interface User {
   id: number;
   name?: string | null;
   phone?: string | null;
-  globalRole: 'super-admin' | 'administrator' | 'staff';
+  globalRole: 'super-admin' | 'staff';
   isActive?: boolean | null;
   updatedAt: string;
   createdAt: string;
@@ -163,7 +163,9 @@ export interface User {
  */
 export interface Media {
   id: number;
+  caption?: string | null;
   alt: string;
+  uploadedBy?: (number | null) | User;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -300,6 +302,7 @@ export interface Post {
     | null;
   attachment?: (number | null) | Media;
   links?: {
+    facebook?: string | null;
     instagram?: string | null;
     youtube?: string | null;
     x?: string | null;
@@ -531,7 +534,9 @@ export interface UsersSelect<T extends boolean = true> {
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
+  caption?: T;
   alt?: T;
+  uploadedBy?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -641,6 +646,7 @@ export interface PostsSelect<T extends boolean = true> {
   links?:
     | T
     | {
+        facebook?: T;
         instagram?: T;
         youtube?: T;
         x?: T;

@@ -5,9 +5,9 @@
  *
  *   npm run seed:dev
  *
- * Test accounts (same as the prototype):
- *   Admin: admin@seebhealthy.om / Admin@2026
- *   Staff: test@seebhealthy.om  / Seeb@2026  (chair of the Health Committee)
+ * Test accounts (local development only):
+ *   Seed operator: admin@seebhealthy.om / Admin@2026 (staff, not administrator)
+ *   Staff: test@seebhealthy.om / Seeb@2026 (chair of the Health Committee)
  *
  * Photos and PDFs are generated placeholders (the prototype's photos are not part of the project).
  */
@@ -82,7 +82,7 @@ const PALETTE = [
 let imageCount = 0
 
 /** A soft brand-coloured placeholder photo. */
-async function placeholderImage(alt: string): Promise<Media> {
+async function placeholderImage(alt: string, uploader: User): Promise<Media> {
   const [from, to] = PALETTE[imageCount++ % PALETTE.length]
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675">
     <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
@@ -94,7 +94,7 @@ async function placeholderImage(alt: string): Promise<Media> {
   const data = await sharp(Buffer.from(svg)).jpeg({ quality: 80 }).toBuffer()
   return payload.create({
     collection: 'media',
-    data: { alt },
+    data: { alt, uploadedBy: uploader.id },
     file: {
       data,
       mimetype: 'image/jpeg',
@@ -102,11 +102,12 @@ async function placeholderImage(alt: string): Promise<Media> {
       size: data.length,
     },
     overrideAccess: true,
+    user: uploader,
   })
 }
 
 /** A one-page PDF placeholder. */
-async function placeholderPdf(name: string): Promise<Media> {
+async function placeholderPdf(name: string, uploader: User): Promise<Media> {
   // A minimal valid PDF, with the cross-reference table Payload checks for.
   const objects = [
     '<</Type/Catalog/Pages 2 0 R>>',
@@ -127,9 +128,10 @@ async function placeholderPdf(name: string): Promise<Media> {
   const pdf = Buffer.from(body, 'latin1')
   return payload.create({
     collection: 'media',
-    data: { alt: name },
+    data: { alt: name, uploadedBy: uploader.id },
     file: { data: pdf, mimetype: 'application/pdf', name, size: pdf.length },
     overrideAccess: true,
+    user: uploader,
   })
 }
 
@@ -141,7 +143,7 @@ const admin: User = await payload.create({
     email: 'admin@seebhealthy.om',
     password: 'Admin@2026',
     name: 'الدكتورة علياء بنت علي الحسني',
-    globalRole: 'administrator',
+    globalRole: 'staff',
     isActive: true,
   },
   overrideAccess: true,
@@ -192,12 +194,12 @@ for (const item of seed.committees) {
   committees[item.code] = committee
 
   for (const post of item.posts) {
-    const cover = post.hasImage ? await placeholderImage(post.title) : null
+    const cover = post.hasImage ? await placeholderImage(post.title, staff) : null
     const gallery = []
     for (let i = 0; i < Math.min(post.galleryCount, 3); i++) {
-      gallery.push({ image: (await placeholderImage(`${post.title} ${i + 1}`)).id })
+      gallery.push({ image: (await placeholderImage(`${post.title} ${i + 1}`, staff)).id })
     }
-    const attachment = post.pdfName ? await placeholderPdf(post.pdfName) : null
+    const attachment = post.pdfName ? await placeholderPdf(post.pdfName, staff) : null
 
     await payload.create({
       collection: 'posts',

@@ -229,6 +229,17 @@ export const Posts: CollectionConfig = {
         data.reviewedAt = null
         data.rejectionReason = null
 
+        // Submission timestamps are controlled by the server.
+        if (requestedStatus === 'submitted') {
+          if (currentStatus !== 'submitted') {
+            data.submittedAt = new Date().toISOString()
+          } else {
+            data.submittedAt = originalDoc?.submittedAt
+          }
+        } else {
+          data.submittedAt = null
+        }
+
         return data
       },
     ],
@@ -301,26 +312,31 @@ export const Posts: CollectionConfig = {
       label: 'PDF attachment',
       filterOptions: { mimeType: { equals: 'application/pdf' } },
     },
-    {
-      name: 'links',
-      type: 'group',
-      label: 'Social media coverage',
+{
+  name: 'links',
+  type: 'group',
+  label: 'Social media coverage',
       fields: [
-        {
-          type: 'row',
-          fields: [
-            { name: 'instagram', type: 'text', label: 'Instagram' },
-            { name: 'youtube', type: 'text', label: 'YouTube' },
-          ],
-        },
-        {
-          type: 'row',
-          fields: [
-            { name: 'x', type: 'text', label: 'X' },
-            { name: 'press', type: 'text', label: 'Newspaper / media interview' },
-          ],
-        },
-      ],
+                {
+                  name: 'facebook',
+                  type: 'text',
+                  admin: { hidden: true },
+                },
+                {
+                  type: 'row',
+                  fields: [
+                    { name: 'instagram', type: 'text', label: 'Instagram' },
+                    { name: 'youtube', type: 'text', label: 'YouTube' },
+                  ],
+                },
+                {
+                  type: 'row',
+                  fields: [
+                    { name: 'x', type: 'text', label: 'X' },
+                    { name: 'press', type: 'text', label: 'Newspaper / media interview' },
+                  ],
+                },
+              ],
     },
     {
       name: 'type',
@@ -357,7 +373,7 @@ export const Posts: CollectionConfig = {
   access: {
     // Staff may move their own draft/rejected post to "submitted"; the beforeChange
     // hook above only lets staff use 'draft' or 'submitted', admins anything.
-    update: ({ req }) => Boolean(req.user),
+    update: ({ req }) => isAdministrator(req.user),
   },
   options: [
     { label: 'Draft', value: 'draft' },
